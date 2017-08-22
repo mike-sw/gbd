@@ -1,1 +1,1 @@
-# gbdecomp
+# gbd

@@ -4,7 +4,6 @@ This is a gameboy binary disassembler... technically for the Custom(-ized from t
 
 */
 
-	
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -262,7 +261,103 @@ int main(int argc, char * argv[])
                 cout << "\t  CCF";
                 break;
 
+            case 0x40:
+                cout << "\t  LD B,B";
+                break;
+            case 0x41:
+                cout << "\t  LD B,C";
+                break;
+            case 0x42:
+                cout << "\t  LD B,D";
+                break;
+            case 0x43:
+                cout << "\t  LD B,E";
+                break;
+            case 0x44:
+                cout << "\t  LD B,H";
+                break;
+            case 0x45:
+                cout << "\t  LD B,L";
+                break;
+            case 0x46:
+                cout << "\t  LD B,(HL)";
+                break;
+            case 0x47:
+                cout << "\t  LD B,A";
+                break;
+            case 0x48:
+                cout << "\t  LD C,B";
+                break;
+            case 0x49:
+                cout << "\t  LD C,C";
+                break;
+            case 0x4A:
+                cout << "\t  LD C,D";
+                break;
+            case 0x4B:
+                cout << "\t  LD C,E";
+                break;
+            case 0x4C:
+                cout << "\t  LD C,H";
+                break;
+            case 0x4D:
+                cout << "\t  LD C,L";
+                break;
+            case 0x4E:
+                cout << "\t  LD C,(HL)";
+                break;
+            case 0x4F:
+                cout << "\t  LD C,A";
+                break;
 
+            case 0x50:
+                cout << "\t  LD D,B";
+                break;
+            case 0x51:
+                cout << "\t  LD D,C";
+                break;
+            case 0x52:
+                cout << "\t  LD D,D";
+                break;
+            case 0x53:
+                cout << "\t  LD D,E";
+                break;
+            case 0x54:
+                cout << "\t  LD D,H";
+                break;
+            case 0x55:
+                cout << "\t  LD D,L";
+                break;
+            case 0x56:
+                cout << "\t  LD D,(HL)";
+                break;
+            case 0x57:
+                cout << "\t  LD D,A";
+                break;
+            case 0x58:
+                cout << "\t  LD E,B";
+                break;
+            case 0x59:
+                cout << "\t  LD E,C";
+                break;
+            case 0x5A:
+                cout << "\t  LD E,D";
+                break;
+            case 0x5B:
+                cout << "\t  LD E,E";
+                break;
+            case 0x5C:
+                cout << "\t  LD E,H";
+                break;
+            case 0x5D:
+                cout << "\t  LD E,L";
+                break;
+            case 0x5E:
+                cout << "\t  LD E,(HL)";
+                break;
+            case 0x5F:
+                cout << "\t  LD E,A";
+                break;
 
 
             case 0xFB:
