@@ -743,6 +743,21 @@ int main(int argc, char * argv[])
                     case 0x0A:
                         cout << "\t  RRC D";
                         break;
+                    case 0x0B:
+                        cout << "\t  RRC E";
+                        break;
+                    case 0x0C:
+                        cout << "\t  RRC H";
+                        break;
+                    case 0x0D:
+                        cout << "\t  RRC L";
+                        break;
+                    case 0x0E:
+                        cout << "\t  RRC (HL)";
+                        break;
+                    case 0x0F:
+                        cout << "\t  RRC A";
+                        break;
 
                     case 0x10:
                         cout << "\t  RL B";
@@ -998,8 +1013,484 @@ int main(int argc, char * argv[])
                     case 0x62:
                         cout << "\t  BIT 4,D";
                         break;
+                    case 0x63:
+                        cout << "\t  BIT 4,E";
+                        break;
+                    case 0x64:
+                        cout << "\t  BIT 4,H";
+                        break;
+                    case 0x65:
+                        cout << "\t  BIT 4,L";
+                        break;
+                    case 0x66:
+                        cout << "\t  BIT 4,(HL)";
+                        break;
+                    case 0x67:
+                        cout << "\t  BIT 4,A";
+                        break;
+                    case 0x68:
+                        cout << "\t  BIT 5,B";
+                        break;
+                    case 0x69:
+                        cout << "\t  BIT 5,C";
+                        break;
+                    case 0x6A:
+                        cout << "\t  BIT 5,D";
+                        break;
+                    case 0x6B:
+                        cout << "\t  BIT 5,E";
+                        break;
+                    case 0x6C:
+                        cout << "\t  BIT 5,H";
+                        break;
+                    case 0x6D:
+                        cout << "\t  BIT 5,L";
+                        break;
+                    case 0x6E:
+                        cout << "\t  BIT 5,(HL)";
+                        break;
+                    case 0x6F:
+                        cout << "\t  BIT 5,A";
+                        break;
+
+                    case 0x70:
+                        cout << "\t  BIT 6,B";
+                        break;
+                    case 0x71:
+                        cout << "\t  BIT 6,C";
+                        break;
+                    case 0x72:
+                        cout << "\t  BIT 6,D";
+                        break;
+                    case 0x73:
+                        cout << "\t  BIT 6,E";
+                        break;
+                    case 0x74:
+                        cout << "\t  BIT 6,H";
+                        break;
+                    case 0x75:
+                        cout << "\t  BIT 6,L";
+                        break;
+                    case 0x76:
+                        cout << "\t  BIT 6,(HL)";
+                        break;
+                    case 0x77:
+                        cout << "\t  BIT 6,A";
+                        break;
+                    case 0x78:
+                        cout << "\t  BIT 7,B";
+                        break;
+                    case 0x79:
+                        cout << "\t  BIT 7,C";
+                        break;
+                    case 0x7A:
+                        cout << "\t  BIT 7,D";
+                        break;
+                    case 0x7B:
+                        cout << "\t  BIT 7,E";
+                        break;
+                    case 0x7C:
+                        cout << "\t  BIT 7,H";
+                        break;
+                    case 0x7D:
+                        cout << "\t  BIT 7,L";
+                        break;
+                    case 0x7E:
+                        cout << "\t  BIT 7,(HL)";
+                        break;
+                    case 0x7F:
+                        cout << "\t  BIT 7,A";
+                        break;
+
+                    case 0x80:
+                        cout << "\t  RES 0,B";
+                        break;
+                    case 0x81:
+                        cout << "\t  RES 0,C";
+                        break;
+                    case 0x82:
+                        cout << "\t  RES 0,D";
+                        break;
+                    case 0x83:
+                        cout << "\t  RES 0,E";
+                        break;
+                    case 0x84:
+                        cout << "\t  RES 0,H";
+                        break;
+                    case 0x85:
+                        cout << "\t  RES 0,L";
+                        break;
+                    case 0x86:
+                        cout << "\t  RES 0,(HL)";
+                        break;
+                    case 0x87:
+                        cout << "\t  RES 0,A";
+                        break;
+                    case 0x88:
+                        cout << "\t  RES 1,B";
+                        break;
+                    case 0x89:
+                        cout << "\t  RES 1,C";
+                        break;
+                    case 0x8A:
+                        cout << "\t  RES 1,D";
+                        break;
+                    case 0x8B:
+                        cout << "\t  RES 1,E";
+                        break;
+                    case 0x8C:
+                        cout << "\t  RES 1,H";
+                        break;
+                    case 0x8D:
+                        cout << "\t  RES 1,L";
+                        break;
+                    case 0x8E:
+                        cout << "\t  RES 1,(HL)";
+                        break;
+                    case 0x8F:
+                        cout << "\t  RES 1,A";
+                        break;
+
+                    case 0x90:
+                        cout << "\t  RES 2,B";
+                        break;
+                    case 0x91:
+                        cout << "\t  RES 2,C";
+                        break;
+                    case 0x92:
+                        cout << "\t  RES 2,D";
+                        break;
+                    case 0x93:
+                        cout << "\t  RES 2,E";
+                        break;
+                    case 0x94:
+                        cout << "\t  RES 2,H";
+                        break;
+                    case 0x95:
+                        cout << "\t  RES 2,L";
+                        break;
+                    case 0x96:
+                        cout << "\t  RES 2,(HL)";
+                        break;
+                    case 0x97:
+                        cout << "\t  RES 2,A";
+                        break;
+                    case 0x98:
+                        cout << "\t  RES 3,B";
+                        break;
+                    case 0x99:
+                        cout << "\t  RES 3,C";
+                        break;
+                    case 0x9A:
+                        cout << "\t  RES 3,D";
+                        break;
+                    case 0x9B:
+                        cout << "\t  RES 3,E";
+                        break;
+                    case 0x9C:
+                        cout << "\t  RES 3,H";
+                        break;
+                    case 0x9D:
+                        cout << "\t  RES 3,L";
+                        break;
+                    case 0x9E:
+                        cout << "\t  RES 3,(HL)";
+                        break;
+                    case 0x9F:
+                        cout << "\t  RES 3,A";
+                        break;
+
+                    case 0xA0:
+                        cout << "\t  RES 4,B";
+                        break;
+                    case 0xA1:
+                        cout << "\t  RES 4,C";
+                        break;
+                    case 0xA2:
+                        cout << "\t  RES 4,D";
+                        break;
+                    case 0xA3:
+                        cout << "\t  RES 4,E";
+                        break;
+                    case 0xA4:
+                        cout << "\t  RES 4,H";
+                        break;
+                    case 0xA5:
+                        cout << "\t  RES 4,L";
+                        break;
+                    case 0xA6:
+                        cout << "\t  RES 4,(HL)";
+                        break;
+                    case 0xA7:
+                        cout << "\t  RES 4,A";
+                        break;
+                    case 0xA8:
+                        cout << "\t  RES 5,B";
+                        break;
+                    case 0xA9:
+                        cout << "\t  RES 5,C";
+                        break;
+                    case 0xAA:
+                        cout << "\t  RES 5,D";
+                        break;
+                    case 0xAB:
+                        cout << "\t  RES 5,E";
+                        break;
+                    case 0xAC:
+                        cout << "\t  RES 5,H";
+                        break;
+                    case 0xAD:
+                        cout << "\t  RES 5,L";
+                        break;
+                    case 0xAE:
+                        cout << "\t  RES 5,(HL)";
+                        break;
+                    case 0xAF:
+                        cout << "\t  RES 5,A";
+                        break;
+
+                    case 0xB0:
+                        cout << "\t  RES 6,B";
+                        break;
+                    case 0xB1:
+                        cout << "\t  RES 6,C";
+                        break;
+                    case 0xB2:
+                        cout << "\t  RES 6,D";
+                        break;
+                    case 0xB3:
+                        cout << "\t  RES 6,E";
+                        break;
+                    case 0xB4:
+                        cout << "\t  RES 6,H";
+                        break;
+                    case 0xB5:
+                        cout << "\t  RES 6,L";
+                        break;
+                    case 0xB6:
+                        cout << "\t  RES 6,(HL)";
+                        break;
+                    case 0xB7:
+                        cout << "\t  RES 6,A";
+                        break;
+                    case 0xB8:
+                        cout << "\t  RES 7,B";
+                        break;
+                    case 0xB9:
+                        cout << "\t  RES 7,C";
+                        break;
+                    case 0xBA:
+                        cout << "\t  RES 7,D";
+                        break;
+                    case 0xBB:
+                        cout << "\t  RES 7,E";
+                        break;
+                    case 0xBC:
+                        cout << "\t  RES 7,H";
+                        break;
+                    case 0xBD:
+                        cout << "\t  RES 7,L";
+                        break;
+                    case 0xBE:
+                        cout << "\t  RES 7,(HL)";
+                        break;
+                    case 0xBF:
+                        cout << "\t  RES 7,A";
+                        break;
+
+                    case 0xC0:
+                        cout << "\t  SET 0,B";
+                        break;
+                    case 0xC1:
+                        cout << "\t  SET 0,C";
+                        break;
+                    case 0xC2:
+                        cout << "\t  SET 0,D";
+                        break;
+                    case 0xC3:
+                        cout << "\t  SET 0,E";
+                        break;
+                    case 0xC4:
+                        cout << "\t  SET 0,H";
+                        break;
+                    case 0xC5:
+                        cout << "\t  SET 0,L";
+                        break;
+                    case 0xC6:
+                        cout << "\t  SET 0,(HL)";
+                        break;
+                    case 0xC7:
+                        cout << "\t  SET 0,A";
+                        break;
+                    case 0xC8:
+                        cout << "\t  SET 1,B";
+                        break;
+                    case 0xC9:
+                        cout << "\t  SET 1,C";
+                        break;
+                    case 0xCA:
+                        cout << "\t  SET 1,D";
+                        break;
+                    case 0xCB:
+                        cout << "\t  SET 1,E";
+                        break;
+                    case 0xCC:
+                        cout << "\t  SET 1,H";
+                        break;
+                    case 0xCD:
+                        cout << "\t  SET 1,L";
+                        break;
+                    case 0xCE:
+                        cout << "\t  SET 1,(HL)";
+                        break;
+                    case 0xCF:
+                        cout << "\t  SET 1,A";
+                        break;
 
 
+                    case 0xD0:
+                        cout << "\t  SET 2,B";
+                        break;
+                    case 0xD1:
+                        cout << "\t  SET 2,C";
+                        break;
+                    case 0xD2:
+                        cout << "\t  SET 2,D";
+                        break;
+                    case 0xD3:
+                        cout << "\t  SET 2,E";
+                        break;
+                    case 0xD4:
+                        cout << "\t  SET 2,H";
+                        break;
+                    case 0xD5:
+                        cout << "\t  SET 2,L";
+                        break;
+                    case 0xD6:
+                        cout << "\t  SET 2,(HL)";
+                        break;
+                    case 0xD7:
+                        cout << "\t  SET 2,A";
+                        break;
+                    case 0xD8:
+                        cout << "\t  SET 3,B";
+                        break;
+                    case 0xD9:
+                        cout << "\t  SET 3,C";
+                        break;
+                    case 0xDA:
+                        cout << "\t  SET 3,D";
+                        break;
+                    case 0xDB:
+                        cout << "\t  SET 3,E";
+                        break;
+                    case 0xDC:
+                        cout << "\t  SET 3,H";
+                        break;
+                    case 0xDD:
+                        cout << "\t  SET 3,L";
+                        break;
+                    case 0xDE:
+                        cout << "\t  SET 3,(HL)";
+                        break;
+                    case 0xDF:
+                        cout << "\t  SET 3,A";
+                        break;
+
+                    case 0xE0:
+                        cout << "\t  SET 4,B";
+                        break;
+                    case 0xE1:
+                        cout << "\t  SET 4,C";
+                        break;
+                    case 0xE2:
+                        cout << "\t  SET 4,D";
+                        break;
+                    case 0xE3:
+                        cout << "\t  SET 4,E";
+                        break;
+                    case 0xE4:
+                        cout << "\t  SET 4,H";
+                        break;
+                    case 0xE5:
+                        cout << "\t  SET 4,L";
+                        break;
+                    case 0xE6:
+                        cout << "\t  SET 4,(HL)";
+                        break;
+                    case 0xE7:
+                        cout << "\t  SET 4,A";
+                        break;
+                    case 0xE8:
+                        cout << "\t  SET 5,B";
+                        break;
+                    case 0xE9:
+                        cout << "\t  SET 5,C";
+                        break;
+                    case 0xEA:
+                        cout << "\t  SET 5,D";
+                        break;
+                    case 0xEB:
+                        cout << "\t  SET 5,E";
+                        break;
+                    case 0xEC:
+                        cout << "\t  SET 5,H";
+                        break;
+                    case 0xED:
+                        cout << "\t  SET 5,L";
+                        break;
+                    case 0xEE:
+                        cout << "\t  SET 5,(HL)";
+                        break;
+                    case 0xEF:
+                        cout << "\t  SET 5,A";
+                        break;
+
+                    case 0xF0:
+                        cout << "\t  SET 6,B";
+                        break;
+                    case 0xF1:
+                        cout << "\t  SET 6,C";
+                        break;
+                    case 0xF2:
+                        cout << "\t  SET 6,D";
+                        break;
+                    case 0xF3:
+                        cout << "\t  SET 6,E";
+                        break;
+                    case 0xF4:
+                        cout << "\t  SET 6,H";
+                        break;
+                    case 0xF5:
+                        cout << "\t  SET 6,L";
+                        break;
+                    case 0xF6:
+                        cout << "\t  SET 6,(HL)";
+                        break;
+                    case 0xF7:
+                        cout << "\t  SET 6,A";
+                        break;
+                    case 0xF8:
+                        cout << "\t  SET 7,B";
+                        break;
+                    case 0xF9:
+                        cout << "\t  SET 7,C";
+                        break;
+                    case 0xFA:
+                        cout << "\t  SET 7,D";
+                        break;
+                    case 0xFB:
+                        cout << "\t  SET 7,E";
+                        break;
+                    case 0xFC:
+                        cout << "\t  SET 7,H";
+                        break;
+                    case 0xFD:
+                        cout << "\t  SET 7,L";
+                        break;
+                    case 0xFE:
+                        cout << "\t  SET 7,(HL)";
+                        break;
                     case 0xFF:
                         cout << "\t  SET 7,A";
                         break;
