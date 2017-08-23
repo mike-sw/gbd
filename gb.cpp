@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
 {
     if(argc<1)
     {
-        cout << "Usage: emu filename.tzx" << endl;
+        cout << "Usage: gbd filename.tzx" << endl;
         //exit();
     }
     cout << "Disassembling " << argv[1] << "...\n" << endl;
@@ -42,6 +42,9 @@ int main(int argc, char * argv[])
 	int length = inputfile.tellg();
 	inputfile.seekg(0, inputfile.beg);
 	
+    //And we'll declare some variables to handle the CB prefix opcodes
+    unsigned char tempCB;
+    unsigned char thisByteCB;
 	
 	//OK cool, now we have a valid file
 	int counter=0;
@@ -56,7 +59,7 @@ int main(int argc, char * argv[])
         
         unsigned char thisByte = *buffer; //Get the current opcode by itself
 
-        cout << "   " << (char)temp;
+        if(temp >= 32 && temp<=126) cout << "   " << (char)temp;
         
         /*
             Now, as we parse our opcodes, print what they are
@@ -84,7 +87,7 @@ int main(int argc, char * argv[])
                 cout << "\t  DEC B\t\t\t\t\tDecrement Register";
                 break;
             case 0x06:
-                cout << "\t LD B,d8";
+                cout << "\t  LD B,d8";
                 break;
             case 0x07:
                 cout << "\t  RLCA";
@@ -359,7 +362,799 @@ int main(int argc, char * argv[])
                 cout << "\t  LD E,A";
                 break;
 
+            case 0x60:
+                cout << "\t  LD H,B";
+                break;
+            case 0x61:
+                cout << "\t  LD H,C";
+                break;
+            case 0x62:
+                cout << "\t  LD H,D";
+                break;
+            case 0x63:
+                cout << "\t  LD H,B";
+                break;
+            case 0x64:
+                cout << "\t  LD H,H";
+                break;
+            case 0x65:
+                cout << "\t  LD H,L";
+                break;
+            case 0x66:
+                cout << "\t  LD H,(HL)";
+                break;
+            case 0x67:
+                cout << "\t  LD H,A";
+                break;
+            case 0x68:
+                cout << "\t  LD H,B";
+                break;
+            case 0x69:
+                cout << "\t  LD L,C";
+                break;
+            case 0x6A:
+                cout << "\t  LD H,B";
+                break;
+            case 0x6B:
+                cout << "\t  LD L,E";
+                break;
+            case 0x6C:
+                cout << "\t  LD L,H";
+                break;
+            case 0x6D:
+                cout << "\t  LD L,L";
+                break;
+            case 0x6E:
+                cout << "\t  LD L,(HL)";
+                break;
+            case 0x6F:
+                cout << "\t  LD L,A";
+                break;
+            case 0x70:
+                cout << "\t  LD (HL),B";
+                break;
+            case 0x71:
+                cout << "\t  LD (HL),C";
+                break;
+            case 0x72:
+                cout << "\t  LD (HL),D";
+                break;
+            case 0x73:
+                cout << "\t  LD (HL),E";
+                break;
+            case 0x74:
+                cout << "\t  LD (HL),H";
+                break;
+            case 0x75:
+                cout << "\t  LD (HL),L";
+                break;
+            case 0x76:
+                cout << "\t  HALT";
+                break;
+            case 0x77:
+                cout << "\t  LD (HL),A";
+                break;
+            case 0x78:
+                cout << "\t  LD A,B";
+                break;
+            case 0x79:
+                cout << "\t  LD A,C";
+                break;
+            case 0x7A:
+                cout << "\t  LD A,D";
+                break;
+            case 0x7B:
+                cout << "\t  LD A,E";
+                break;
+            case 0x7C:
+                cout << "\t  LD A,H";
+                break;
+            case 0x7D:
+                cout << "\t  LD A,L";
+                break;
+            case 0x7E:
+                cout << "\t  LD A,(HL)";
+                break;
+            case 0x7F:
+                cout << "\t  LD A,A";
+                break;
+            case 0x80:
+                cout << "\t  ADD A,B";
+                break;
+            case 0x81:
+                cout << "\t  ADD A,C";
+                break;
+            case 0x82:
+                cout << "\t  ADD A,D";
+                break;
+            case 0x83:
+                cout << "\t  ADD A,E";
+                break;
+            case 0x84:
+                cout << "\t  ADD A,H";
+                break;
+            case 0x85:
+                cout << "\t  ADD A,L";
+                break;
+            case 0x86:
+                cout << "\t  ADD A,(HL)";
+                break;
+            case 0x87:
+                cout << "\t  ADD A,A";
+                break;
+            case 0x88:
+                cout << "\t  ADC A,B";
+                break;
+            case 0x89:
+                cout << "\t  ADC A,C";
+                break;
+            case 0x8A:
+                cout << "\t  ADC A,D";
+                break;
+            case 0x8B:
+                cout << "\t  ADC A,E";
+                break;
+            case 0x8C:
+                cout << "\t  ADC A,H";
+                break;
+            case 0x8D:
+                cout << "\t  ADC A,L";
+                break;
+            case 0x8E:
+                cout << "\t  ADC A,(HL)";
+                break;
+            case 0x8F:
+                cout << "\t  ADC A,A";
+                break;
 
+            case 0x90:
+                cout << "\t  SUB B";
+                break;
+            case 0x91:
+                cout << "\t  SUB C";
+                break;
+            case 0x92:
+                cout << "\t  SUB D";
+                break;
+            case 0x93:
+                cout << "\t  SUB E";
+                break;
+            case 0x94:
+                cout << "\t  SUB H";
+                break;
+            case 0x95:
+                cout << "\t  SUB L";
+                break;
+            case 0x96:
+                cout << "\t  SUB (HL)";
+                break;
+            case 0x97:
+                cout << "\t  SUB A";
+                break;
+            case 0x98:
+                cout << "\t  SBC A,B";
+                break;
+            case 0x99:
+                cout << "\t  SBC A,C";
+                break;
+            case 0x9A:
+                cout << "\t  SBC A,D";
+                break;
+            case 0x9B:
+                cout << "\t  SBC A,E";
+                break;
+            case 0x9C:
+                cout << "\t  SBC A,H";
+                break;
+            case 0x9D:
+                cout << "\t  SBC A,L";
+                break;
+            case 0x9E:
+                cout << "\t  SBC A,(HL)";
+                break;
+            case 0x9F:
+                cout << "\t  SBC A,A";
+                break;
+
+            case 0xA0:
+                cout << "\t  AND B";
+                break;
+            case 0xA1:
+                cout << "\t  AND C";
+                break;
+            case 0xA2:
+                cout << "\t  AND D";
+                break;
+            case 0xA3:
+                cout << "\t  AND E";
+                break;
+            case 0xA4:
+                cout << "\t  AND H";
+                break;
+            case 0xA5:
+                cout << "\t  AND L";
+                break;
+            case 0xA6:
+                cout << "\t  AND (HL)";
+                break;
+            case 0xA7:
+                cout << "\t  AND A";
+                break;
+            case 0xA8:
+                cout << "\t  XOR B";
+                break;
+            case 0xA9:
+                cout << "\t  XOR C";
+                break;
+            case 0xAA:
+                cout << "\t  XOR D";
+                break;
+            case 0xAB:
+                cout << "\t  XOR E";
+                break;
+            case 0xAC:
+                cout << "\t  XOR H";
+                break;
+            case 0xAD:
+                cout << "\t  XOR L";
+                break;
+            case 0xAE:
+                cout << "\t  XOR (HL)";
+                break;
+            case 0xAF:
+                cout << "\t  XOR A";
+                break;
+
+            case 0xB0:
+                cout << "\t  OR B";
+                break;
+            case 0xB1:
+                cout << "\t  OR C";
+                break;
+            case 0xB2:
+                cout << "\t  OR D";
+                break;
+            case 0xB3:
+                cout << "\t  OR E";
+                break;
+            case 0xB4:
+                cout << "\t  OR H";
+                break;
+            case 0xB5:
+                cout << "\t  OR L";
+                break;
+            case 0xB6:
+                cout << "\t  OR (HL)";
+                break;
+            case 0xB7:
+                cout << "\t  OR A";
+                break;
+            case 0xB8:
+                cout << "\t  CP B";
+                break;
+            case 0xB9:
+                cout << "\t  CP C";
+                break;
+            case 0xBA:
+                cout << "\t  CP D";
+                break;
+            case 0xBB:
+                cout << "\t  CP E";
+                break;
+            case 0xBC:
+                cout << "\t  CP H";
+                break;
+            case 0xBD:
+                cout << "\t  CP L";
+                break;
+            case 0xBE:
+                cout << "\t  CP (HL)";
+                break;
+            case 0xBF:
+                cout << "\t  CP A";
+                break;
+
+            case 0xC0:
+                cout << "\t  RET NZ";
+                break;
+            case 0xC1:
+                cout << "\t  POP BC";
+                break;
+            case 0xC2:
+                cout << "\t  JP NZ,a16";
+                break;
+            case 0xC3:
+                cout << "\t  JP a16";
+                break;
+            case 0xC4:
+                cout << "\t  CALL NZ,a16";
+                break;
+            case 0xC5:
+                cout << "\t  PUSH BC";
+                break;
+            case 0xC6:
+                cout << "\t  ADD A,d8";
+                break;
+            case 0xC7:
+                cout << "\t  RST 00H";
+                break;
+            case 0xC8:
+                cout << "\t  RET Z";
+                break;
+            case 0xC9:
+                cout << "\t  RET";
+                break;
+            case 0xCA:
+                cout << "\t  JP Z,a16";
+                break;
+            case 0xCB:
+                /*
+                    0xCB is a PREFIX opcode. This means that it's meant to be used like CB xx, and is used to hold another series of opcodes.
+                    We need to pair it with the byte immediately following to perform the relevant function
+                */
+
+                //cout << "\t  PREFIX CB***************";
+
+                //We need to get the next byte
+                inputfile.read(buffer,1);
+                
+                tempCB = *buffer;
+               /*if(tempCB >= 32 && tempCB<=126)
+                {
+                 cout << (char)tempCB; //Print the ascii of this character right next to the first character
+                }*/
+                printf(" %02x", tempCB); //Print the opcode
+                
+                thisByteCB = *buffer; //Get the current opcode by itself
+
+                //And now we get to do the second huge switch/case to handle CB prefixed instructions
+                switch(thisByteCB)
+                {
+                    case 0x00:
+                        cout << "\t  RLC B";
+                        break;
+                    case 0x01:
+                        cout << "\t  RLC C";
+                        break;
+                    case 0x02:
+                        cout << "\t  RLC D";
+                        break;
+                    case 0x03:
+                        cout << "\t  RLC E";
+                        break;
+                    case 0x04:
+                        cout << "\t  RLC H";
+                        break;
+                    case 0x05:
+                        cout << "\t  RLC L";
+                        break;
+                    case 0x06:
+                        cout << "\t  RLC (HL)";
+                        break;
+                    case 0x07:
+                        cout << "\t  RLC A";
+                        break;
+                    case 0x08:
+                        cout << "\t  RRC B";
+                        break;
+                    case 0x09:
+                        cout << "\t  RRC C";
+                        break;
+                    case 0x0A:
+                        cout << "\t  RRC D";
+                        break;
+
+                    case 0x10:
+                        cout << "\t  RL B";
+                        break;
+                    case 0x11:
+                        cout << "\t  RL C";
+                        break;
+                    case 0x12:
+                        cout << "\t  RL D";
+                        break;
+                    case 0x13:
+                        cout << "\t  RL E";
+                        break;
+                    case 0x14:
+                        cout << "\t  RL H";
+                        break;
+                    case 0x15:
+                        cout << "\t  RLC L";
+                        break;
+                    case 0x16:
+                        cout << "\t  RLC (HL)";
+                        break;
+                    case 0x17:
+                        cout << "\t  RL A";
+                        break;
+                    case 0x18:
+                        cout << "\t  RR B";
+                        break;
+                    case 0x19:
+                        cout << "\t  RR C";
+                        break;
+                    case 0x1A:
+                        cout << "\t  RR D";
+                        break;
+                    case 0x1B:
+                        cout << "\t  RR E";
+                        break;
+                    case 0x1C:
+                        cout << "\t  RR H";
+                        break;
+                    case 0x1D:
+                        cout << "\t  RR L";
+                        break;
+                    case 0x1E:
+                        cout << "\t  RR (HL)";
+                        break;
+                    case 0x1F:
+                        cout << "\t  RR A";
+                        break;
+
+                    case 0x20:
+                        cout << "\t  SLA B";
+                        break;
+                    case 0x21:
+                        cout << "\t  SLA C";
+                        break;
+                    case 0x22:
+                        cout << "\t  SLA D";
+                        break;
+                    case 0x23:
+                        cout << "\t  SLA E";
+                        break;
+                    case 0x24:
+                        cout << "\t  SLA H";
+                        break;
+                    case 0x25:
+                        cout << "\t  SLA L";
+                        break;
+                    case 0x26:
+                        cout << "\t  SLA (HL)";
+                        break;
+                    case 0x27:
+                        cout << "\t  SLA A";
+                        break;
+                    case 0x28:
+                        cout << "\t  SRA B";
+                        break;
+                    case 0x29:
+                        cout << "\t  SRA C";
+                        break;
+                    case 0x2A:
+                        cout << "\t  SRA D";
+                        break;
+                    case 0x2B:
+                        cout << "\t  SRA E";
+                        break;
+                    case 0x2C:
+                        cout << "\t  SRA H";
+                        break;
+                    case 0x2D:
+                        cout << "\t  SRA L";
+                        break;
+                    case 0x2E:
+                        cout << "\t  SRA (HL)";
+                        break;
+                    case 0x2F:
+                        cout << "\t  SRA A";
+                        break;
+
+                    case 0x30:
+                        cout << "\t  SWAP B";
+                        break;
+                    case 0x31:
+                        cout << "\t  SWAP C";
+                        break;
+                    case 0x32:
+                        cout << "\t  SWAP D";
+                        break;
+                    case 0x33:
+                        cout << "\t  SWAP E";
+                        break;
+                    case 0x34:
+                        cout << "\t  SWAP H";
+                        break;
+                    case 0x35:
+                        cout << "\t  SWAP L";
+                        break;
+                    case 0x36:
+                        cout << "\t  SWAP (HL)";
+                        break;
+                    case 0x37:
+                        cout << "\t  SWAP A";
+                        break;
+                    case 0x38:
+                        cout << "\t  SRL B";
+                        break;
+                    case 0x39:
+                        cout << "\t  SRL C";
+                        break;
+                    case 0x3A:
+                        cout << "\t  SRL D";
+                        break;
+                    case 0x3B:
+                        cout << "\t  SRL E";
+                        break;
+                    case 0x3C:
+                        cout << "\t  SRL H";
+                        break;
+                    case 0x3D:
+                        cout << "\t  SRL L";
+                        break;
+                    case 0x3E:
+                        cout << "\t  SRL (HL)";
+                        break;
+                    case 0x3F:
+                        cout << "\t  SRL A";
+                        break;
+
+                    case 0x40:
+                        cout << "\t  BIT 0,B";
+                        break;
+                    case 0x41:
+                        cout << "\t  BIT 0,C";
+                        break;
+                    case 0x42:
+                        cout << "\t  BIT 0,D";
+                        break;
+                    case 0x43:
+                        cout << "\t  BIT 0,E";
+                        break;
+                    case 0x44:
+                        cout << "\t  BIT 0,H";
+                        break;
+                    case 0x45:
+                        cout << "\t  BIT 0,L";
+                        break;
+                    case 0x46:
+                        cout << "\t  BIT 0,(HL)";
+                        break;
+                    case 0x47:
+                        cout << "\t  BIT 0,A";
+                        break;
+                    case 0x48:
+                        cout << "\t  BIT 1,B";
+                        break;
+                    case 0x49:
+                        cout << "\t  BIT 1,C";
+                        break;
+                    case 0x4A:
+                        cout << "\t  BIT 1,D";
+                        break;
+                    case 0x4B:
+                        cout << "\t  BIT 1,E";
+                        break;
+                    case 0x4C:
+                        cout << "\t  BIT 1,H";
+                        break;
+                    case 0x4D:
+                        cout << "\t  BIT 1,L";
+                        break;
+                    case 0x4E:
+                        cout << "\t  BIT 1,(HL)";
+                        break;
+                    case 0x4F:
+                        cout << "\t  BIT 1,A";
+                        break;
+
+                    case 0x50:
+                        cout << "\t  BIT 2,B";
+                        break;
+                    case 0x51:
+                        cout << "\t  BIT 2,C";
+                        break;
+                    case 0x52:
+                        cout << "\t  BIT 2,D";
+                        break;
+                    case 0x53:
+                        cout << "\t  BIT 2,E";
+                        break;
+                    case 0x54:
+                        cout << "\t  BIT 2,H";
+                        break;
+                    case 0x55:
+                        cout << "\t  BIT 2,L";
+                        break;
+                    case 0x56:
+                        cout << "\t  BIT 2,(HL)";
+                        break;
+                    case 0x57:
+                        cout << "\t  BIT 2,A";
+                        break;
+                    case 0x58:
+                        cout << "\t  BIT 3,B";
+                        break;
+                    case 0x59:
+                        cout << "\t  BIT 3,C";
+                        break;
+                    case 0x5A:
+                        cout << "\t  BIT 3,D";
+                        break;
+                    case 0x5B:
+                        cout << "\t  BIT 3,E";
+                        break;
+                    case 0x5C:
+                        cout << "\t  BIT 3,H";
+                        break;
+                    case 0x5D:
+                        cout << "\t  BIT 3,L";
+                        break;
+                    case 0x5E:
+                        cout << "\t  BIT 3,(HL)";
+                        break;
+                    case 0x5F:
+                        cout << "\t  BIT 3,A";
+                        break;
+
+                    case 0x60:
+                        cout << "\t  BIT 4,B";
+                        break;
+                    case 0x61:
+                        cout << "\t  BIT 4,C";
+                        break;
+                    case 0x62:
+                        cout << "\t  BIT 4,D";
+                        break;
+
+
+                    case 0xFF:
+                        cout << "\t  SET 7,A";
+                        break;
+                }
+                
+                counter++;//Increase our counter, as we've read another byte from our source file
+                //This way, our addresses going forward will be correct...
+
+                break;
+            case 0xCC:
+                cout << "\t  CALL Z,a16";
+                break;
+            case 0xCD:
+                cout << "\t  CALL a16";
+                break;
+            case 0xCE:
+                cout << "\t  ADC A,d8";
+                break;
+            case 0xCF:
+                cout << "\t  RST 08H";
+                break;
+
+            case 0xD0:
+                cout << "\t  RET NC";
+                break;
+            case 0xD1:
+                cout << "\t  POP DE";
+                break;
+            case 0xD2:
+                cout << "\t  JP NC,a16";
+                break;
+            case 0xD3:
+                cout << "\t  Unused";
+                break;
+            case 0xD4:
+                cout << "\t  CALL NC,16";
+                break;
+            case 0xD5:
+                cout << "\t  PUSH DE";
+                break;
+            case 0xD6:
+                cout << "\t  SUB d8";
+                break;
+            case 0xD7:
+                cout << "\t  RST 10H";
+                break;
+            case 0xD8:
+                cout << "\t  RET C";
+                break;
+            case 0xD9:
+                cout << "\t  RETI";
+                break;
+            case 0xDA:
+                cout << "\t  JP C,a16";
+                break;
+            case 0xDB:
+                cout << "\t  Unused";
+                break;
+            case 0xDC:
+                cout << "\t  CALL C,a16";
+                break;
+            case 0xDD:
+                cout << "\t  Unused";
+                break;
+            case 0xDE:
+                cout << "\t  SBC A,d8";
+                break;
+            case 0xDF:
+                cout << "\t  RST 18H";
+                break;
+
+
+
+            case 0xE0:
+                cout << "\t  LDH (a8),A";
+                break;
+            case 0xE1:
+                cout << "\t  POP HL";
+                break;
+            case 0xE2:
+                cout << "\t  LD (C),A";
+                break;
+            case 0xE3:
+                cout << "\t  Unused";
+                break;
+            case 0xE4:
+                cout << "\t  Unused";
+                break;
+            case 0xE5:
+                cout << "\t  PUSH HL";
+                break;
+            case 0xE6:
+                cout << "\t  AND d8";
+                break;
+            case 0xE7:
+                cout << "\t  RST 20H";
+                break;
+            case 0xE8:
+                cout << "\t  ADD SP,r8";
+                break;
+            case 0xE9:
+                cout << "\t  JP (HL)";
+                break;
+            case 0xEA:
+                cout << "\t  LD (a16),A";
+                break;
+            case 0xEB:
+                cout << "\t  Unused";
+                break;
+            case 0xEC:
+                cout << "\t  Unused";
+                break;
+            case 0xED:
+                cout << "\t  Unused";
+                break;
+            case 0xEE:
+                cout << "\t  XOR d8";
+                break;
+            case 0xEF:
+                cout << "\t  RST 28H";
+                break;
+
+            case 0xF0:
+                cout << "\t  LDH A,(a8)";
+                break;
+            case 0xF1:
+                cout << "\t  POP AF";
+                break;
+            case 0xF2:
+                cout << "\t  LD A,(C)";
+                break;
+            case 0xF3:
+                cout << "\t  DI";
+                break;
+            case 0xF4:
+                cout << "\t  Unused";
+                break;
+            case 0xF5:
+                cout << "\t  PUSH AF";
+                break;
+            case 0xF6:
+                cout << "\t  OR d8";
+                break;
+            case 0xF7:
+                cout << "\t  RST 30H";
+                break;
+            case 0xF8:
+                cout << "\t  LD HL,SP+r8";
+                break;
+            case 0xF9:
+                cout << "\t  LD SP,HL";
+                break;
+            case 0xFA:
+                cout << "\t  LD A,(a16)";
+                break;
             case 0xFB:
                 cout << "\t  EI";
                 break;
