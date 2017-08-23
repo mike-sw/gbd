@@ -12,6 +12,9 @@ This is a gameboy binary disassembler... technically for the Custom(-ized from t
 
 using namespace std;
 
+int counter=0; //Keeps track of what address we're debugging
+
+
 unsigned char getNext8Bits(ifstream &file)
 {
     char *buffer = new char [1]; //We're going to read this in 1 byte chunks
@@ -19,11 +22,46 @@ unsigned char getNext8Bits(ifstream &file)
     return *buffer;
 }
 
+void print8BitLine(string instruction, string description, string impactedRegister, unsigned char byte1)
+{
+    printf(" %02x", byte1); //Print the value next to the hex opcode
+                
+    //Print the value of these bytes into our function
+    cout << "\t  " << instruction;
+    printf("%02x", byte1); //Print the value
+    cout << "\t\t\t\t";
+
+    //Print the value of these bytes into the description of this function
+    printf("%02x", byte1);
+    cout << impactedRegister << "\t" << description;
+
+    //Advance our addresses appropriately
+    counter=counter+1;
+}
+
+void print16BitLine(string instruction, string description, string impactedRegister, unsigned char byte1, unsigned char byte2)
+{
+               
+    printf(" %02x%02x", byte1,byte2); //Print the value next to the hex opcode
+                
+    //Print the value of these bytes into our function
+    cout << "\t  " << instruction;
+    printf("%02x%02x", byte1,byte2); //Print the value
+    cout << "\t\t\t\t";
+
+    //Print the value of these bytes into the description of this function
+    printf("%02x%02x", byte1,byte2);
+    cout << impactedRegister << "\t" << description;
+
+    //Advance our addresses appropriately
+    counter=counter+2;
+}
+
 int main(int argc, char * argv[])
 {
     if(argc<1)
     {
-        cout << "Usage: gbd filename.tzx" << endl;
+        cout << "Usage: gbd filename.gb" << endl;
         //exit();
     }
     cout << "Disassembling " << argv[1] << "...\n" << endl;
@@ -53,7 +91,6 @@ int main(int argc, char * argv[])
     unsigned char byte1,byte2;
 	
 	//OK cool, now we have a valid file
-	int counter=0;
 	while(!inputfile.eof())
 	{
 		inputfile.read(buffer,1);
@@ -77,22 +114,14 @@ int main(int argc, char * argv[])
             case 0x00:
                 cout << "\t  NOP";
                 break;
-            case 0x01:
+            case 0x01: //LD BC,d16
                
+                //Since this is a 16-bit function, pull both arguments
                byte1 = getNext8Bits(inputfile);
                byte2 = getNext8Bits(inputfile);
                
-                printf(" %02x%02x", byte1,byte2); //Print the value next to the hex opcode
-                
-                //Print the value of these bytes into our function
-                cout << "\t  LD BC,";
-                 printf("%02x%02x", byte1,byte2); //Print the value
-                 cout << "\t\t\t\t";
+                print16BitLine("LD BC", "Load a 16-bit immediate value into registers BC", "->BC", byte1, byte2);
 
-                 //Print the value of these bytes into the description of this function
-                printf("%02x%02x", byte1,byte2);
-                cout << "->BC" << "\tLoad a 16-bit immediate value into registers BC";
-                counter=counter+2;    
 
 
                 break;
@@ -108,23 +137,15 @@ int main(int argc, char * argv[])
             case 0x05:
                 cout << "\t  DEC B\t\t\t\t\tDecrement Register";
                 break;
-            case 0x06:
+            case 0x06: //LD B, d8
 
-                inputfile.read(buffer,1); //Read the next byte
-                counter++;
-                
-                tempCB = *buffer;
+                byte1 = getNext8Bits(inputfile);
                
-                printf(" %02x", tempCB); //Print the value
-                
-                //thisByteCB = *buffer; //Get the current opcode by itself
-                cout << "\t  LD B,d8\t\t\t\t";
-                printf(" %02x", tempCB); //Print the value
-                cout << "->B" <<  "\tLoad a 8-bit immediate value into register B";
+                print8BitLine("LD B", "\tLoad a 8-bit immediate value into register B", "->B", byte1);
 
                 break;
-            case 0x07:
-                cout << "\t  RLCA";
+            case 0x07: //RCLA, check here for more info: https://hax.iimarckus.org/topic/1617/
+                cout << "\t  RLCA\t\t\t\t\tRotate Left, carry A";
                 break;
             case 0x08:
                 cout << "\t  LD (a16),SP";
@@ -136,13 +157,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD A,(BC)";
                 break;
             case 0x0B:
-                cout << "\t  DEC BC";
+                cout << "\t  DEC BC\t\t\t\t\tDecrement Register";
                 break;
             case 0x0C:
-                cout << "\t  INC C";
+                cout << "\t  INC C\t\t\t\t\tIncrement Register";
                 break;
             case 0x0D:
-                cout << "\t  DEC C";
+                cout << "\t  DEC C\t\t\t\t\tDecrement Register";
                 break;
             case 0x0E:
                 cout << "\t  LD C,d8";
@@ -161,13 +182,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD (DE),A";
                 break;
             case 0x13:
-                cout << "\t  INC DE";
+                cout << "\t  INC DE\t\t\t\t\tIncrement Register";
                 break;
             case 0x14:
-                cout << "\t  INC D";
+                cout << "\t  INC D\t\t\t\t\tIncrement Register";
                 break;
             case 0x15:
-                cout << "\t  DEC D";
+                cout << "\t  DEC D\t\t\t\t\tDecrement Register";
                 break;
             case 0x16:
                 cout << "\t  LD D,d8";
@@ -185,13 +206,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD A,(DE)";
                 break;
             case 0x1B:
-                cout << "\t  DEC DE";
+                cout << "\t  DEC DE\t\t\t\t\tDecrement Register";
                 break;
             case 0x1C:
-                cout << "\t  INC E";
+                cout << "\t  INC E\t\t\t\t\tIncrement Register";
                 break;
             case 0x1D:
-                cout << "\t  DEC E";
+                cout << "\t  DEC E\t\t\t\t\tDecrement Register";
                 break;
             case 0x1E:
                 cout << "\t  LD E,d8";
@@ -210,13 +231,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD(HL+),A";
                 break;
             case 0x23:
-                cout << "\t  INC HL";
+                cout << "\t  INC HL\t\t\t\t\tIncrement Register";
                 break;
             case 0x24:
-                cout << "\t  INC H";
+                cout << "\t  INC H\t\t\t\t\tIncrement Register";
                 break;
             case 0x25:
-                cout << "\t  DEC H";
+                cout << "\t  DEC H\t\t\t\t\tDecrement Register";
                 break;
             case 0x26:
                 cout << "\t  LD H,d8";
@@ -234,13 +255,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD A,(HL+)";
                 break;
             case 0x2B:
-                cout << "\t  DEC HL";
+                cout << "\t  DEC HL\t\t\t\t\tDecrement Register";
                 break;
             case 0x2C:
-                cout << "\t  INC L";
+                cout << "\t  INC L\t\t\t\t\tIncrement Register";
                 break;
             case 0x2D:
-                cout << "\t  DEC L";
+                cout << "\t  DEC L\t\t\t\t\tDecrement Register";
                 break;
             case 0x2E:
                 cout << "\t  LD L,d8";
@@ -259,13 +280,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD (HL-),A";
                 break;
             case 0x33:
-                cout << "\t  INC SP";
+                cout << "\t  INC SP\t\t\t\t\tIncrement Register";
                 break;
             case 0x34:
-                cout << "\t  INC (HL)";
+                cout << "\t  INC (HL)\t\t\t\t\tIncrement Register";
                 break;
             case 0x35:
-                cout << "\t  DEC (HL)";
+                cout << "\t  DEC (HL)\t\t\t\t\t\tDecrement Register";
                 break;
             case 0x36:
                 cout << "\t  LD (HL),d8";
@@ -283,13 +304,13 @@ int main(int argc, char * argv[])
                 cout << "\t  LD A,(HL-)";
                 break;
             case 0x3B:
-                cout << "\t  DEC SP";
+                cout << "\t  DEC SP\t\t\t\t\tDecrement Register";
                 break;
             case 0x3C:
                 cout << "\t  INC A";
                 break;
             case 0x3D:
-                cout << "\t  DEC A";
+                cout << "\t  DEC A\t\t\t\t\tDecrement Register";
                 break;
             case 0x3E:
                 cout << "\t  LD A,d8";
@@ -493,28 +514,28 @@ int main(int argc, char * argv[])
                 cout << "\t  LD A,A";
                 break;
             case 0x80:
-                cout << "\t  ADD A,B";
+                cout << "\t  ADD A,B\t\t\t\t\tA+B\tAdd the values in registers A and B, with the result stored in A";
                 break;
             case 0x81:
-                cout << "\t  ADD A,C";
+                cout << "\t  ADD A,C\t\t\t\t\tA+C\tAdd the values in registers A and C, with the result stored in A";
                 break;
             case 0x82:
-                cout << "\t  ADD A,D";
+                cout << "\t  ADD A,D\t\t\t\t\tA+D\tAdd the values in registers A and D, with the result stored in A";
                 break;
             case 0x83:
-                cout << "\t  ADD A,E";
+                cout << "\t  ADD A,E\t\t\t\t\tA+E\tAdd the values in registers A and E, with the result stored in A";
                 break;
             case 0x84:
-                cout << "\t  ADD A,H";
+                cout << "\t  ADD A,H\t\t\t\t\tA+H\tAdd the values in registers A and H, with the result stored in A";
                 break;
             case 0x85:
-                cout << "\t  ADD A,L";
+                cout << "\t  ADD A,L\t\t\t\t\tA+L\tAdd the values in registers A and L, with the result stored in A";
                 break;
             case 0x86:
-                cout << "\t  ADD A,(HL)";
+                cout << "\t  ADD A,(HL)\t\t\t\t\tA+HL\tAdd the values in registers A and HL, with the result stored in A";
                 break;
             case 0x87:
-                cout << "\t  ADD A,A";
+                cout << "\t  ADD A,A\t\t\t\t\tA+A\tAdd the values in registers A and A, with the result stored in A";
                 break;
             case 0x88:
                 cout << "\t  ADC A,B";
@@ -591,28 +612,29 @@ int main(int argc, char * argv[])
                 break;
 
             case 0xA0:
-                cout << "\t  AND B";
+                cout << "\t  AND B\t\t\t\t\tB && A\tDo the binary AND operation against B and A";
                 break;
             case 0xA1:
-                cout << "\t  AND C";
+                cout << "\t  AND C\t\t\t\t\tC && A\tDo the binary AND operation against C and A";
                 break;
             case 0xA2:
-                cout << "\t  AND D";
+                cout << "\t  AND D\t\t\t\t\tD && A\tDo the binary AND operation against D and A";
                 break;
             case 0xA3:
-                cout << "\t  AND E";
+                cout << "\t  AND E\t\t\t\t\tE && A\tDo the binary AND operation against E and A";
                 break;
             case 0xA4:
-                cout << "\t  AND H";
+                cout << "\t  AND H\t\t\t\t\tH && A\tDo the binary AND operation against H and A";
                 break;
             case 0xA5:
-                cout << "\t  AND L";
+                cout << "\t  AND L\t\t\t\t\tL && A\tDo the binary AND operation against L and A";
                 break;
             case 0xA6:
-                cout << "\t  AND (HL)";
+                cout << "\t  AND (HL)\t\t\t\tHL && A\tDo the binary AND operation against HL and A";
                 break;
-            case 0xA7:
-                cout << "\t  AND A";
+            case 0xA7: //AND A               
+
+                cout << "\t  AND A\t\t\t\t\tA && A\tDo the binary AND operation against A and A";
                 break;
             case 0xA8:
                 cout << "\t  XOR B";
@@ -640,7 +662,7 @@ int main(int argc, char * argv[])
                 break;
 
             case 0xB0:
-                cout << "\t  OR B";
+                cout << "\t  OR B\t\t\t\t\tA || B\tOr the values in registers A and B, with the result stored in A";
                 break;
             case 0xB1:
                 cout << "\t  OR C";
@@ -697,8 +719,13 @@ int main(int argc, char * argv[])
             case 0xC2:
                 cout << "\t  JP NZ,a16";
                 break;
-            case 0xC3:
-                cout << "\t  JP a16";
+            case 0xC3: //JP a16
+                byte1 = getNext8Bits(inputfile);
+                byte2 = getNext8Bits(inputfile);
+               
+                print16BitLine("JP ", "Jump to the specified 16-bit address", "->PC", byte1, byte2);
+
+                //cout << "\t  JP a16";
                 break;
             case 0xC4:
                 cout << "\t  CALL NZ,a16";
@@ -710,7 +737,7 @@ int main(int argc, char * argv[])
                 cout << "\t  ADD A,d8";
                 break;
             case 0xC7:
-                cout << "\t  RST 00H";
+                cout << "\t  RST 00H\t\t\t\t\tCall the code at 00"; //According to https://www.cemetech.net/forum/viewtopic.php?t=6744
                 break;
             case 0xC8:
                 cout << "\t  RET Z";
@@ -1614,9 +1641,14 @@ int main(int argc, char * argv[])
                 cout << "\t  Unused";
                 break;
             case 0xE5:
-                cout << "\t  PUSH HL";
+                cout << "\t  PUSH HL\t\t\t\t\tPush the contents of HL onto the stack";
                 break;
-            case 0xE6:
+            case 0xE6: //AND d8
+                byte1 = getNext8Bits(inputfile);
+               
+                print8BitLine("AND A", "Do the binary AND operation of this immediate value and A", " && A", byte1);
+
+
                 cout << "\t  AND d8";
                 break;
             case 0xE7:
@@ -1663,7 +1695,7 @@ int main(int argc, char * argv[])
                 cout << "\t  Unused";
                 break;
             case 0xF5:
-                cout << "\t  PUSH AF";
+                cout << "\t  PUSH AF\t\t\t\tPush the contents of AF onto the stack";
                 break;
             case 0xF6:
                 cout << "\t  OR d8";
