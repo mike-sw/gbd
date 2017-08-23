@@ -12,6 +12,13 @@ This is a gameboy binary disassembler... technically for the Custom(-ized from t
 
 using namespace std;
 
+unsigned char getNext8Bits(ifstream &file)
+{
+    char *buffer = new char [1]; //We're going to read this in 1 byte chunks
+    file.read(buffer,1); //Read the next 2 bytes
+    return *buffer;
+}
+
 int main(int argc, char * argv[])
 {
     if(argc<1)
@@ -32,9 +39,6 @@ int main(int argc, char * argv[])
 	ifstream inputfile (argv[1], ifstream::binary);
 	
 	char *buffer = new char [2]; //We're going to read this in 4 byte chunks
-	
-	inputfile.read(buffer, 6);
-    cout << "**" << buffer << endl;
 
 	
 	//Let's get the length of the file
@@ -45,6 +49,8 @@ int main(int argc, char * argv[])
     //And we'll declare some variables to handle the CB prefix opcodes
     unsigned char tempCB;
     unsigned char thisByteCB;
+
+    unsigned char byte1,byte2;
 	
 	//OK cool, now we have a valid file
 	int counter=0;
@@ -72,22 +78,50 @@ int main(int argc, char * argv[])
                 cout << "\t  NOP";
                 break;
             case 0x01:
-                cout << "\t  LD BC,d16";
+               
+               byte1 = getNext8Bits(inputfile);
+               byte2 = getNext8Bits(inputfile);
+               
+                printf(" %02x%02x", byte1,byte2); //Print the value next to the hex opcode
+                
+                //Print the value of these bytes into our function
+                cout << "\t  LD BC,";
+                 printf("%02x%02x", byte1,byte2); //Print the value
+                 cout << "\t\t\t\t";
+
+                 //Print the value of these bytes into the description of this function
+                printf("%02x%02x", byte1,byte2);
+                cout << "->BC" << "\tLoad a 16-bit immediate value into registers BC";
+                counter=counter+2;    
+
+
                 break;
             case 0x02:
                 cout << "\t  LD (BC),A";
                 break;
             case 0x03:
-                cout << "\t  INC BC";
+                cout << "\t  INC BC\t\t\t\t\tIncrement Register";
                 break;
             case 0x04:
-                cout << "\t  INC B";
+                cout << "\t  INC B\t\t\t\t\tIncrement Register";
                 break;
             case 0x05:
                 cout << "\t  DEC B\t\t\t\t\tDecrement Register";
                 break;
             case 0x06:
-                cout << "\t  LD B,d8";
+
+                inputfile.read(buffer,1); //Read the next byte
+                counter++;
+                
+                tempCB = *buffer;
+               
+                printf(" %02x", tempCB); //Print the value
+                
+                //thisByteCB = *buffer; //Get the current opcode by itself
+                cout << "\t  LD B,d8\t\t\t\t";
+                printf(" %02x", tempCB); //Print the value
+                cout << "->B" <<  "\tLoad a 8-bit immediate value into register B";
+
                 break;
             case 0x07:
                 cout << "\t  RLCA";
