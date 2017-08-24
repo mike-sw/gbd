@@ -14,6 +14,10 @@ using namespace std;
 
 int counter=0; //Keeps track of what address we're debugging
 
+void printByteAsHex(unsigned char byte)
+{
+    cout << " " << setw(2) << setfill('0') << hex << (int)byte;
+}
 
 unsigned char getNext8Bits(ifstream &file)
 {
@@ -24,15 +28,15 @@ unsigned char getNext8Bits(ifstream &file)
 
 void print8BitLine(string instruction, string description, string impactedRegister, unsigned char byte1)
 {
-    printf(" %02x", byte1); //Print the value next to the hex opcode
-                
+    printByteAsHex(byte1);
+
     //Print the value of these bytes into our function
     cout << "\t  " << instruction;
-    printf("%02x", byte1); //Print the value
+    printByteAsHex(byte1); //Print the value
     cout << "\t\t\t\t";
 
     //Print the value of these bytes into the description of this function
-    printf("%02x", byte1);
+    printByteAsHex(byte1);
     cout << impactedRegister << "\t" << description;
 
     //Advance our addresses appropriately
@@ -41,16 +45,19 @@ void print8BitLine(string instruction, string description, string impactedRegist
 
 void print16BitLine(string instruction, string description, string impactedRegister, unsigned char byte1, unsigned char byte2)
 {
-               
-    printf(" %02x%02x", byte1,byte2); //Print the value next to the hex opcode
+    cout << " ";
+    printByteAsHex(byte1);
+    printByteAsHex(byte2);
                 
     //Print the value of these bytes into our function
     cout << "\t  " << instruction;
-    printf("%02x%02x", byte1,byte2); //Print the value
+    printByteAsHex(byte1);
+    printByteAsHex(byte2);
     cout << "\t\t\t\t";
 
     //Print the value of these bytes into the description of this function
-    printf("%02x%02x", byte1,byte2);
+    printByteAsHex(byte1);
+    printByteAsHex(byte2);
     cout << impactedRegister << "\t" << description;
 
     //Advance our addresses appropriately
@@ -93,12 +100,12 @@ int main(int argc, char * argv[])
 	//OK cool, now we have a valid file
 	while(!inputfile.eof())
 	{
-		inputfile.read(buffer,1);
-		//inputfile.unsetf(ios_base::skipws);
+		inputfile.read(buffer,1);//Read a byte from the file
 		
-        printf("%04x:\t", counter); //Print the address
+        cout << setw(4) << setfill('0') << hex << counter << ":\t"; //Print our current address in the left margin
+
         unsigned char temp = *buffer;
-        printf("%02x", temp); //Print the opcode
+        printByteAsHex(temp);//Print our opcode
         
         unsigned char thisByte = *buffer; //Get the current opcode by itself
 
@@ -320,108 +327,108 @@ int main(int argc, char * argv[])
                 break;
 
             case 0x40:
-                cout << "\t  LD B,B";
+                cout << "\t  LD B,B\t\t\t\t\tB->B\tCopy register B into itself, usually used as a flag reset";
                 break;
             case 0x41:
-                cout << "\t  LD B,C";
+                cout << "\t  LD B,C\t\t\t\t\tC->B\tCopy the value in register C into register B";
                 break;
             case 0x42:
-                cout << "\t  LD B,D";
+                cout << "\t  LD B,D\t\t\t\t\tD->B\tCopy the value in register D into register B";
                 break;
             case 0x43:
-                cout << "\t  LD B,E";
+                cout << "\t  LD B,E\t\t\t\t\tE->B\tCopy the value in register E into register B";
                 break;
             case 0x44:
-                cout << "\t  LD B,H";
+                cout << "\t  LD B,H\t\t\t\t\tH->B\tCopy the value in register H into register B";
                 break;
             case 0x45:
-                cout << "\t  LD B,L";
+                cout << "\t  LD B,L\t\t\t\t\tL->B\tCopy the value in register L into register B";
                 break;
             case 0x46:
-                cout << "\t  LD B,(HL)";
+                cout << "\t  LD B,(HL)\t\t\t\t\tHL->B\tCopy the value in register HL into register B";
                 break;
             case 0x47:
-                cout << "\t  LD B,A";
+                cout << "\t  LD B,A\t\t\t\t\tA->B\tCopy the value in register A into register B";
                 break;
             case 0x48:
-                cout << "\t  LD C,B";
+                cout << "\t  LD C,B\t\t\t\t\tB->C\tCopy the value in register B into register C";
                 break;
             case 0x49:
-                cout << "\t  LD C,C";
+                cout << "\t  LD C,C\t\t\t\t\tC->C\tCopy register C into itself, usually used as a flag reset";
                 break;
             case 0x4A:
-                cout << "\t  LD C,D";
+                cout << "\t  LD C,D\t\t\t\t\tD->C\tCopy the value in register D into register C";
                 break;
             case 0x4B:
-                cout << "\t  LD C,E";
+                cout << "\t  LD C,E\t\t\t\t\tE->C\tCopy the value in register E into register C";
                 break;
             case 0x4C:
-                cout << "\t  LD C,H";
+                cout << "\t  LD C,H\t\t\t\t\tH->C\tCopy the value in register H into register C";
                 break;
             case 0x4D:
-                cout << "\t  LD C,L";
+                cout << "\t  LD C,L\t\t\t\t\tL->C\tCopy the value in register L into register C";
                 break;
             case 0x4E:
-                cout << "\t  LD C,(HL)";
+                cout << "\t  LD C,(HL)\t\t\t\t\tHL->C\tCopy the value in register HL into register C";
                 break;
             case 0x4F:
-                cout << "\t  LD C,A";
+                cout << "\t  LD C,A\t\t\t\t\tA->C\tCopy the value in register A into register C";
                 break;
 
             case 0x50:
-                cout << "\t  LD D,B";
+                cout << "\t  LD D,B\t\t\t\t\tB->D\tCopy the value in register B into register D";
                 break;
             case 0x51:
-                cout << "\t  LD D,C";
+                cout << "\t  LD D,C\t\t\t\t\tC->D\tCopy the value in register C into register D";
                 break;
             case 0x52:
-                cout << "\t  LD D,D";
+                cout << "\t  LD D,D\t\t\t\t\tD->D\tCopy register D into itself, usually used as a flag reset";
                 break;
             case 0x53:
-                cout << "\t  LD D,E";
+                cout << "\t  LD D,E\t\t\t\t\tE->D\tCopy the value in register E into register D";
                 break;
             case 0x54:
-                cout << "\t  LD D,H";
+                cout << "\t  LD D,H\t\t\t\t\tH->D\tCopy the value in register H into register D";
                 break;
             case 0x55:
-                cout << "\t  LD D,L";
+                cout << "\t  LD D,L\t\t\t\t\tL->D\tCopy the value in register L into register D";
                 break;
             case 0x56:
-                cout << "\t  LD D,(HL)";
+                cout << "\t  LD D,(HL)\t\t\t\t\tHL->D\tCopy the value in register HL into register D";
                 break;
             case 0x57:
-                cout << "\t  LD D,A";
+                cout << "\t  LD D,A\t\t\t\t\tA->D\tCopy the value in register A into register D";
                 break;
             case 0x58:
-                cout << "\t  LD E,B";
+                cout << "\t  LD E,B\t\t\t\t\tB->E\tCopy the value in register B into register E";
                 break;
             case 0x59:
-                cout << "\t  LD E,C";
+                cout << "\t  LD E,C\t\t\t\t\tC->E\tCopy the value in register C into register E";
                 break;
             case 0x5A:
-                cout << "\t  LD E,D";
+                cout << "\t  LD E,D\t\t\t\t\tE->E\tCopy the value in register E into register E";
                 break;
             case 0x5B:
-                cout << "\t  LD E,E";
+                cout << "\t  LD E,E\t\t\t\t\tE->E\tCopy register E into itself, usually used as a flag reset";
                 break;
             case 0x5C:
-                cout << "\t  LD E,H";
+                cout << "\t  LD E,H\t\t\t\t\tH->E\tCopy the value in register H into register E";
                 break;
             case 0x5D:
-                cout << "\t  LD E,L";
+                cout << "\t  LD E,L\t\t\t\t\tL->E\tCopy the value in register L into register E";
                 break;
             case 0x5E:
-                cout << "\t  LD E,(HL)";
+                cout << "\t  LD E,(HL)\t\t\t\t\tHL->E\tCopy the value in register HL into register E";
                 break;
             case 0x5F:
-                cout << "\t  LD E,A";
+                cout << "\t  LD E,A\t\t\t\t\tA->E\tCopy the value in register A into register E";
                 break;
 
             case 0x60:
-                cout << "\t  LD H,B";
+                cout << "\t  LD H,B\t\t\t\t\tB->H\tCopy the value in register B into register H";
                 break;
             case 0x61:
-                cout << "\t  LD H,C";
+                cout << "\t  LD H,C\t\t\t\t\tC->H\tCopy the value in register C into register H";
                 break;
             case 0x62:
                 cout << "\t  LD H,D";
@@ -764,7 +771,7 @@ int main(int argc, char * argv[])
                 {
                  cout << (char)tempCB; //Print the ascii of this character right next to the first character
                 }*/
-                printf(" %02x", tempCB); //Print the opcode
+                printByteAsHex(tempCB);
                 
                 thisByteCB = *buffer; //Get the current opcode by itself
 
@@ -1727,28 +1734,6 @@ int main(int argc, char * argv[])
             case 0xFF:
                 cout << "\t  RST 38H";
                 break;
-
-            
-            
-            /*case 0x:
-                
-                unsigned char byte1;
-                char byte1temp;
-                inputfile.get(byte1temp);
-                
-                unsigned char byte2;
-                char byte2temp;
-                inputfile.get(byte2temp);
-                
-                byte1=byte1temp;
-                byte2=byte2temp;
-                
-                printf(" %02x %02x  JMP $%02x%02x", byte1, byte2, byte2, byte1 );
-                //cout << " " << inputfile.peek() << " " << inputfile.peek() << " " << "\tJMP";
-                counter = counter+2; //Because we pulled 2 bytes out
-                break;*/
-            
-                
         }
         
         cout << endl;
