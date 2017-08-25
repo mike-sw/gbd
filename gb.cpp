@@ -12,7 +12,7 @@ This is a gameboy binary disassembler... technically for the Custom(-ized from t
 
 using namespace std;
 
-int counter=0; //Keeps track of what address we're debugging
+int counter=0; //Keeps track of what address we're disassembling
 
 void printByteAsHex(unsigned char byte)
 {
@@ -22,7 +22,7 @@ void printByteAsHex(unsigned char byte)
 unsigned char getNext8Bits(ifstream &file)
 {
     char *buffer = new char [1]; //We're going to read this in 1 byte chunks
-    file.read(buffer,1); //Read the next 2 bytes
+    file.read(buffer,1); //Read the next byte
     return *buffer;
 }
 
@@ -31,13 +31,14 @@ void print8BitLine(string instruction, string description, string impactedRegist
     printByteAsHex(byte1);
 
     //Print the value of these bytes into our function
-    cout << "\t  " << instruction;
+    cout << setfill(' ') << setw(15) << instruction;
     printByteAsHex(byte1); //Print the value
-    cout << "\t\t\t\t";
+    cout << setfill(' ') << setw(30);
 
     //Print the value of these bytes into the description of this function
     printByteAsHex(byte1);
-    cout << impactedRegister << "\t" << description;
+    cout << impactedRegister;
+    cout << setfill(' ') << setw(45) << description;
 
     //Advance our addresses appropriately
     counter=counter+1;
@@ -72,18 +73,11 @@ int main(int argc, char * argv[])
         //exit();
     }
     cout << "Disassembling " << argv[1] << "...\n" << endl;
-    
-    
-
-/*	for(int x=0; x<argc;x++)
-	{
-		cout << "Argument " << x << ": " << argv[x] << endl;
-	}*/
 
     //Grab our first argument (our filename to open)
 	ifstream inputfile (argv[1], ifstream::binary);
 	
-	char *buffer = new char [2]; //We're going to read this in 4 byte chunks
+	unsigned char *buffer = new unsigned char [1]; //Set up our buffer
 
 	
 	//Let's get the length of the file
@@ -94,29 +88,29 @@ int main(int argc, char * argv[])
     //And we'll declare some variables to handle the CB prefix opcodes
     unsigned char tempCB;
     unsigned char thisByteCB;
-
     unsigned char byte1,byte2;
 	
-	//OK cool, now we have a valid file
+	//Scan until the file is done
 	while(!inputfile.eof())
 	{
-		inputfile.read(buffer,1);//Read a byte from the file
-		
-        cout << setw(4) << setfill('0') << hex << counter << ":\t"; //Print our current address in the left margin
+        cout << setw(4) << setfill('0') << hex << counter << ":" << setw(1); //Print our current address in the left margin
 
-        unsigned char temp = *buffer;
-        printByteAsHex(temp);//Print our opcode
+        *buffer = getNext8Bits(inputfile); //Read a byte from the file
+        printByteAsHex(*buffer);//Print our opcode
         
         unsigned char thisByte = *buffer; //Get the current opcode by itself
 
-        if(temp >= 32 && temp<=126) cout << "   " << (char)temp;
+        //We only want to print opcodes as if they're ASCII if they actually fall in the appropriate range
+        //We don't want to try to print the unprintable
+        if(*buffer >= 32 && *buffer<=126) cout << "   " << (char)*buffer;
         
+
         /*
             Now, as we parse our opcodes, print what they are
 
         */
 
-        switch(thisByte)
+        switch(*buffer)
         {
             case 0x00:
                 cout << "\t  NOP";
@@ -644,28 +638,28 @@ int main(int argc, char * argv[])
                 cout << "\t  AND A\t\t\t\t\tA && A\tDo the binary AND operation against A and A";
                 break;
             case 0xA8:
-                cout << "\t  XOR B";
+                cout << "\t  XOR B\t\t\t\t\tA XOR B\tXor the values in registers A and B, with the result stored in A";
                 break;
             case 0xA9:
-                cout << "\t  XOR C";
+                cout << "\t  XOR C\t\t\t\t\tA XOR C\tXor the values in registers A and C, with the result stored in A";
                 break;
             case 0xAA:
-                cout << "\t  XOR D";
+                cout << "\t  XOR D\t\t\t\t\tA XOR D\tXor the values in registers A and D, with the result stored in A";
                 break;
             case 0xAB:
-                cout << "\t  XOR E";
+                cout << "\t  XOR E\t\t\t\t\tA XOR E\tXor the values in registers A and E, with the result stored in A";
                 break;
             case 0xAC:
-                cout << "\t  XOR H";
+                cout << "\t  XOR H\t\t\t\t\tA XOR H\tXor the values in registers A and H, with the result stored in A";
                 break;
             case 0xAD:
-                cout << "\t  XOR L";
+                cout << "\t  XOR L\t\t\t\t\tA XOR L\tXor the values in registers A and L, with the result stored in A";
                 break;
             case 0xAE:
-                cout << "\t  XOR (HL)";
+                cout << "\t  XOR (HL)\t\t\t\t\tA XOR HL\tXor the values in registers A and HL, with the result stored in A";
                 break;
             case 0xAF:
-                cout << "\t  XOR A";
+                cout << "\t  XOR A\t\t\t\t\tA XOR A\tXor the values in register A against itself. A now equals zero.";
                 break;
 
             case 0xB0:
@@ -761,16 +755,10 @@ int main(int argc, char * argv[])
                     We need to pair it with the byte immediately following to perform the relevant function
                 */
 
-                //cout << "\t  PREFIX CB***************";
-
                 //We need to get the next byte
-                inputfile.read(buffer,1);
+                *buffer = getNext8Bits(inputfile);
                 
                 tempCB = *buffer;
-               /*if(tempCB >= 32 && tempCB<=126)
-                {
-                 cout << (char)tempCB; //Print the ascii of this character right next to the first character
-                }*/
                 printByteAsHex(tempCB);
                 
                 thisByteCB = *buffer; //Get the current opcode by itself
