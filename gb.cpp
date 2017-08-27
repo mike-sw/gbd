@@ -35,14 +35,14 @@ void print8BitLine(string instruction, string description, string impactedRegist
     printByteAsHex(byte1);
 
     //Print the value of these bytes into our function
-    cout << setfill(' ') << setw(15) << instruction;
+    cout << setfill('*') << setw(15) << instruction;
     printByteAsHex(byte1); //Print the value
-    cout << setfill(' ') << setw(30);
+    cout << setfill('-') << setw(30);
 
     //Print the value of these bytes into the description of this function
     printByteAsHex(byte1);
     cout << impactedRegister;
-    cout << setfill(' ') << setw(45) << description;
+    cout << setfill('+') << setw(45) << description;
 
     //Advance our addresses appropriately
     counter=counter+1;
@@ -50,23 +50,30 @@ void print8BitLine(string instruction, string description, string impactedRegist
 
 void print16BitLine(string instruction, string description, string impactedRegister, unsigned char byte1, unsigned char byte2)
 {
-    cout << " ";
+    //cout << " ";
     printByteAsHex(byte1);
     printByteAsHex(byte2);
                 
     //Print the value of these bytes into our function
-    cout << "\t  " << instruction;
+    cout << setfill('*') << setw(15) << instruction;
     printByteAsHex(byte1);
     printByteAsHex(byte2);
-    cout << "\t\t\t\t";
+    cout << setfill('-') << setw(30);
 
     //Print the value of these bytes into the description of this function
     printByteAsHex(byte1);
     printByteAsHex(byte2);
-    cout << impactedRegister << "\t" << description;
+    cout << impactedRegister;
+    cout << setfill('+') << setw(45) << description;
 
     //Advance our addresses appropriately
     counter=counter+2;
+}
+
+void printLine(string instruction, string description)
+{
+    cout << setfill('*') << setw(15) << instruction;
+    cout << setfill('+') << setw(45) << description;
 }
 
 int main(int argc, char * argv[])
@@ -164,7 +171,7 @@ int main(int argc, char * argv[])
                 switch(*buffer)
                 {
                     case 0x00:
-                        cout << "\t  NOP";
+                        printLine("NOP", "No Operation");
                         break;
                     case 0x01: //LD BC,d16
                        
@@ -181,96 +188,97 @@ int main(int argc, char * argv[])
                         cout << "\t  LD (BC),A";
                         break;
                     case 0x03:
-                        cout << "\t  INC BC\t\t\t\t\tIncrement Register";
+                        printLine("INC BC", "Increment Register");
+                        //cout << "\t  INC BC\t\t\t\t\tIncrement Register";
                         break;
                     case 0x04:
-                        cout << "\t  INC B\t\t\t\t\tIncrement Register";
+                        printLine("INC B","Increment Register");
                         break;
                     case 0x05:
-                        cout << "\t  DEC B\t\t\t\t\tDecrement Register";
+                        printLine("DEC B", "Decrement Register");
                         break;
                     case 0x06: //LD B, d8
 
                         byte1 = getNext8Bits(inputfile);
                        
-                        print8BitLine("LD B", "\tLoad a 8-bit immediate value into register B", "->B", byte1);
+                        print8BitLine("LD B", "Load a 8-bit immediate value into register B", "->B", byte1);
 
                         break;
                     case 0x07: //RCLA, check here for more info: https://hax.iimarckus.org/topic/1617/
-                        cout << "\t  RLCA\t\t\t\t\tRotate Left, carry A";
+                        printLine("RLCA","Rotate Left, carry A");
                         break;
                     case 0x08:
                         cout << "\t  LD (a16),SP";
                         break;
                     case 0x09:
-                        cout << "\t  ADD HL,BC";
+                        printLine("ADD HL, BC", "");
                         break;
                     case 0x0A:
-                        cout << "\t  LD A,(BC)";
+                        printLine("LD A,(BC)", "");
                         break;
                     case 0x0B:
-                        cout << "\t  DEC BC\t\t\t\t\tDecrement Register";
+                        printLine("DEC BC","Decrement Register");
                         break;
                     case 0x0C:
-                        cout << "\t  INC C\t\t\t\t\tIncrement Register";
+                        printLine("INC C","Increment Register");
                         break;
                     case 0x0D:
-                        cout << "\t  DEC C\t\t\t\t\tDecrement Register";
+                        printLine("DEC C","Decrement Register");
                         break;
                     case 0x0E:
                         cout << "\t  LD C,d8";
                         break;
                     case 0x0F:
-                        cout << "\t  RRCA";
+                        printLine("RRCA","");
                         break;
 
                     case 0x10:
-                        cout << "\t  STOP 0";
+                        printLine("STOP 0","");
                         break;
                     case 0x11:
                         cout << "\t  LD DE,d16";
                         break;
                     case 0x12:
-                        cout << "\t  LD (DE),A";
+                        printLine("LD (DE),A","");
                         break;
                     case 0x13:
-                        cout << "\t  INC DE\t\t\t\t\tIncrement Register";
+                        printLine("INC DE","Increment Register");
                         break;
                     case 0x14:
-                        cout << "\t  INC D\t\t\t\t\tIncrement Register";
+                        printLine("INC D","Increment Register");
                         break;
                     case 0x15:
-                        cout << "\t  DEC D\t\t\t\t\tDecrement Register";
+                        printLine("DEC D", "Decrement Register");
                         break;
                     case 0x16:
                         cout << "\t  LD D,d8";
                         break;
                     case 0x17:
-                        cout << "\t  RLA";
+                        printLine("RLA","");
                         break;
                     case 0x18:
                         cout << "\t  JR r8";
                         break;
                     case 0x19:
-                        cout << "\t  ADD HL,DE";
+                        printLine("ADD HL,DE","");
                         break;
                     case 0x1A:
-                        cout << "\t  LD A,(DE)";
+                        printLine("LD A,(DE)","");
                         break;
                     case 0x1B:
-                        cout << "\t  DEC DE\t\t\t\t\tDecrement Register";
+                        printLine("DEC DE", "Decrement Register");
                         break;
                     case 0x1C:
-                        cout << "\t  INC E\t\t\t\t\tIncrement Register";
+                        printLine("INC E", "Increment Register");
                         break;
                     case 0x1D:
-                        cout << "\t  DEC E\t\t\t\t\tDecrement Register";
+                        printLine("DEC E", "Decrement Register");
                         break;
                     case 0x1E:
                         cout << "\t  LD E,d8";
                         break;
                     case 0x1F:
-                        cout << "\t  RRA";
+                        printLine("RRA","");
                         break;
 
                     case 0x20:
@@ -280,46 +288,46 @@ int main(int argc, char * argv[])
                         cout << "\t  LD HL,d16";
                         break;
                     case 0x22:
-                        cout << "\t  LD(HL+),A";
+                        printLine("LD(HL+),A","");
                         break;
                     case 0x23:
-                        cout << "\t  INC HL\t\t\t\t\tIncrement Register";
+                        printLine("INC HL","Increment Register");
                         break;
                     case 0x24:
-                        cout << "\t  INC H\t\t\t\t\tIncrement Register";
+                        printLine("INC H","Increment Register");
                         break;
                     case 0x25:
-                        cout << "\t  DEC H\t\t\t\t\tDecrement Register";
+                        printLine("DEC H","Decrement Register");
                         break;
                     case 0x26:
                         cout << "\t  LD H,d8";
                         break;
                     case 0x27:
-                        cout << "\t  DAA";
+                        printLine("DAA","");
                         break;
                     case 0x28:
                         cout << "\t  JR Z,r8";
                         break;
                     case 0x29:
-                        cout << "\t  ADD HL,HL";
+                        printLine("ADD HL,HL","");
                         break;
                     case 0x2A:
-                        cout << "\t  LD A,(HL+)";
+                        printLine("LD A,(HL+)","");
                         break;
                     case 0x2B:
-                        cout << "\t  DEC HL\t\t\t\t\tDecrement Register";
+                        printLine("DEC HL","Decrement Register");
                         break;
                     case 0x2C:
-                        cout << "\t  INC L\t\t\t\t\tIncrement Register";
+                        printLine("INC L","Increment Register");
                         break;
                     case 0x2D:
-                        cout << "\t  DEC L\t\t\t\t\tDecrement Register";
+                        printLine("DEC L","Decrement Register");
                         break;
                     case 0x2E:
                         cout << "\t  LD L,d8";
                         break;
                     case 0x2F:
-                        cout << "\t  CPL";
+                        printLine("CPL","");
                         break;
 
                     case 0x30:
@@ -329,268 +337,268 @@ int main(int argc, char * argv[])
                         cout << "\t  LD SP,d16";
                         break;
                     case 0x32:
-                        cout << "\t  LD (HL-),A";
+                        printLine("LD (HL-),A","");
                         break;
                     case 0x33:
-                        cout << "\t  INC SP\t\t\t\t\tIncrement Register";
+                        printLine("INC SP","Increment Register");
                         break;
                     case 0x34:
-                        cout << "\t  INC (HL)\t\t\t\t\tIncrement Register";
+                        printLine("INC (HL)","Increment Register");
                         break;
                     case 0x35:
-                        cout << "\t  DEC (HL)\t\t\t\t\t\tDecrement Register";
+                        printLine("DEC (HL)","Decrement Register");
                         break;
                     case 0x36:
                         cout << "\t  LD (HL),d8";
                         break;
                     case 0x37:
-                        cout << "\t  SCF";
+                        printLine("SCF","");
                         break;
                     case 0x38:
                         cout << "\t  JR C,r8";
                         break;
                     case 0x39:
-                        cout << "\t  ADD HL,SP";
+                        printLine("ADD HL,SP","");
                         break;
                     case 0x3A:
-                        cout << "\t  LD A,(HL-)";
+                        printLine("LD A,(HL-)","");
                         break;
                     case 0x3B:
-                        cout << "\t  DEC SP\t\t\t\t\tDecrement Register";
+                        printLine("DEC SP","Decrement Register");
                         break;
                     case 0x3C:
-                        cout << "\t  INC A";
+                        printLine("INC A","Increment Register");
                         break;
                     case 0x3D:
-                        cout << "\t  DEC A\t\t\t\t\tDecrement Register";
+                        printLine("DEC A","Decrement Register");
                         break;
                     case 0x3E:
                         cout << "\t  LD A,d8";
                         break;
                     case 0x3F:
-                        cout << "\t  CCF";
+                        printLine("CCF","");
                         break;
 
                     case 0x40:
-                        cout << "\t  LD B,B\t\t\t\t\tB->B\tCopy register B into itself, usually used as a flag reset";
+                        printLine("LD B,B","B->B\tCopy register B into itself, usually used as a flag reset");
                         break;
                     case 0x41:
-                        cout << "\t  LD B,C\t\t\t\t\tC->B\tCopy the value in register C into register B";
+                        printLine("LD B,C","C->B\tCopy the value in register C into register B");
                         break;
                     case 0x42:
-                        cout << "\t  LD B,D\t\t\t\t\tD->B\tCopy the value in register D into register B";
+                        printLine("LD B,D","D->B\tCopy the value in register D into register B");
                         break;
                     case 0x43:
-                        cout << "\t  LD B,E\t\t\t\t\tE->B\tCopy the value in register E into register B";
+                        printLine("LD B,E","E->B\tCopy the value in register E into register B");
                         break;
                     case 0x44:
-                        cout << "\t  LD B,H\t\t\t\t\tH->B\tCopy the value in register H into register B";
+                        printLine("LD B,H","H->B\tCopy the value in register H into register B");
                         break;
                     case 0x45:
-                        cout << "\t  LD B,L\t\t\t\t\tL->B\tCopy the value in register L into register B";
+                        printLine("LD B,L","L->B\tCopy the value in register L into register B");
                         break;
                     case 0x46:
-                        cout << "\t  LD B,(HL)\t\t\t\t\tHL->B\tCopy the value in register HL into register B";
+                        printLine("LD B,(HL)","HL->B\tCopy the value in register HL into register B");
                         break;
                     case 0x47:
-                        cout << "\t  LD B,A\t\t\t\t\tA->B\tCopy the value in register A into register B";
+                        printLine("LD B,A","A->B\tCopy the value in register A into register B");
                         break;
                     case 0x48:
-                        cout << "\t  LD C,B\t\t\t\t\tB->C\tCopy the value in register B into register C";
+                        printLine("LD C,B","B->C\tCopy the value in register B into register C");
                         break;
                     case 0x49:
-                        cout << "\t  LD C,C\t\t\t\t\tC->C\tCopy register C into itself, usually used as a flag reset";
+                        printLine("LD C,C","C->C\tCopy register C into itself, usually used as a flag reset");
                         break;
                     case 0x4A:
-                        cout << "\t  LD C,D\t\t\t\t\tD->C\tCopy the value in register D into register C";
+                        printLine("LD C,D","D->C\tCopy the value in register D into register C");
                         break;
                     case 0x4B:
-                        cout << "\t  LD C,E\t\t\t\t\tE->C\tCopy the value in register E into register C";
+                        printLine("LD C,E","E->C\tCopy the value in register E into register C");
                         break;
                     case 0x4C:
-                        cout << "\t  LD C,H\t\t\t\t\tH->C\tCopy the value in register H into register C";
+                        printLine("LD C,H","H->C\tCopy the value in register H into register C");
                         break;
                     case 0x4D:
-                        cout << "\t  LD C,L\t\t\t\t\tL->C\tCopy the value in register L into register C";
+                        printLine("LD C,L","L->C\tCopy the value in register L into register C");
                         break;
                     case 0x4E:
-                        cout << "\t  LD C,(HL)\t\t\t\t\tHL->C\tCopy the value in register HL into register C";
+                        printLine("LD C,(HL)","HL->C\tCopy the value in register HL into register C");
                         break;
                     case 0x4F:
-                        cout << "\t  LD C,A\t\t\t\t\tA->C\tCopy the value in register A into register C";
+                        printLine("LD C,A","A->C\tCopy the value in register A into register C");
                         break;
 
                     case 0x50:
-                        cout << "\t  LD D,B\t\t\t\t\tB->D\tCopy the value in register B into register D";
+                        printLine("LD D,B","B->D\tCopy the value in register B into register D");
                         break;
                     case 0x51:
-                        cout << "\t  LD D,C\t\t\t\t\tC->D\tCopy the value in register C into register D";
+                        printLine("LD D,C","C->D\tCopy the value in register C into register D");
                         break;
                     case 0x52:
-                        cout << "\t  LD D,D\t\t\t\t\tD->D\tCopy register D into itself, usually used as a flag reset";
+                        printLine("LD D,D","D->D\tCopy register D into itself, usually used as a flag reset");
                         break;
                     case 0x53:
-                        cout << "\t  LD D,E\t\t\t\t\tE->D\tCopy the value in register E into register D";
+                        printLine("LD D,E","E->D\tCopy the value in register E into register D");
                         break;
                     case 0x54:
-                        cout << "\t  LD D,H\t\t\t\t\tH->D\tCopy the value in register H into register D";
+                        printLine("LD D,H","H->D\tCopy the value in register H into register D");
                         break;
                     case 0x55:
-                        cout << "\t  LD D,L\t\t\t\t\tL->D\tCopy the value in register L into register D";
+                        printLine("LD D,L","L->D\tCopy the value in register L into register D");
                         break;
                     case 0x56:
-                        cout << "\t  LD D,(HL)\t\t\t\t\tHL->D\tCopy the value in register HL into register D";
+                        printLine("LD D,(HL)","HL->D\tCopy the value in register HL into register D");
                         break;
                     case 0x57:
-                        cout << "\t  LD D,A\t\t\t\t\tA->D\tCopy the value in register A into register D";
+                        printLine("LD D,A","A->D\tCopy the value in register A into register D");
                         break;
                     case 0x58:
-                        cout << "\t  LD E,B\t\t\t\t\tB->E\tCopy the value in register B into register E";
+                        printLine("LD E,B","B->E\tCopy the value in register B into register E");
                         break;
                     case 0x59:
-                        cout << "\t  LD E,C\t\t\t\t\tC->E\tCopy the value in register C into register E";
+                        printLine("LD E,C","C->E\tCopy the value in register C into register E");
                         break;
                     case 0x5A:
-                        cout << "\t  LD E,D\t\t\t\t\tE->E\tCopy the value in register E into register E";
+                        printLine("LD E,D","E->E\tCopy the value in register E into register E");
                         break;
                     case 0x5B:
-                        cout << "\t  LD E,E\t\t\t\t\tE->E\tCopy register E into itself, usually used as a flag reset";
+                        printLine("LD E,E","E->E\tCopy register E into itself, usually used as a flag reset");
                         break;
                     case 0x5C:
-                        cout << "\t  LD E,H\t\t\t\t\tH->E\tCopy the value in register H into register E";
+                        printLine("LD E,H","H->E\tCopy the value in register H into register E");
                         break;
                     case 0x5D:
-                        cout << "\t  LD E,L\t\t\t\t\tL->E\tCopy the value in register L into register E";
+                        printLine("LD E,L","L->E\tCopy the value in register L into register E");
                         break;
                     case 0x5E:
-                        cout << "\t  LD E,(HL)\t\t\t\t\tHL->E\tCopy the value in register HL into register E";
+                        printLine("LD E,(HL)","HL->E\tCopy the value in register HL into register E");
                         break;
                     case 0x5F:
-                        cout << "\t  LD E,A\t\t\t\t\tA->E\tCopy the value in register A into register E";
+                        printLine("LD E,A","A->E\tCopy the value in register A into register E");
                         break;
 
                     case 0x60:
-                        cout << "\t  LD H,B\t\t\t\t\tB->H\tCopy the value in register B into register H";
+                        printLine("LD H,B","B->H\tCopy the value in register B into register H");
                         break;
                     case 0x61:
-                        cout << "\t  LD H,C\t\t\t\t\tC->H\tCopy the value in register C into register H";
+                        printLine("LD H,C","C->H\tCopy the value in register C into register H");
                         break;
                     case 0x62:
-                        cout << "\t  LD H,D";
+                        printLine("LD H,D","");
                         break;
                     case 0x63:
-                        cout << "\t  LD H,B";
+                        printLine("LD H,B","");
                         break;
                     case 0x64:
-                        cout << "\t  LD H,H";
+                        printLine("LD H,H","");
                         break;
                     case 0x65:
-                        cout << "\t  LD H,L";
+                        printLine("LD H,L","");
                         break;
                     case 0x66:
-                        cout << "\t  LD H,(HL)";
+                        printLine("LD H,(HL)","");
                         break;
                     case 0x67:
-                        cout << "\t  LD H,A";
+                        printLine("LD H,A","");
                         break;
                     case 0x68:
-                        cout << "\t  LD H,B";
+                        printLine("LD H,B","");
                         break;
                     case 0x69:
-                        cout << "\t  LD L,C";
+                        printLine("LD L,C","");
                         break;
                     case 0x6A:
-                        cout << "\t  LD H,B";
+                        printLine("LD H,B","");
                         break;
                     case 0x6B:
-                        cout << "\t  LD L,E";
+                        printLine("LD L,E","");
                         break;
                     case 0x6C:
-                        cout << "\t  LD L,H";
+                        printLine("LD L,H","");
                         break;
                     case 0x6D:
-                        cout << "\t  LD L,L";
+                        printLine("LD L,L","");
                         break;
                     case 0x6E:
-                        cout << "\t  LD L,(HL)";
+                        printLine("LD L,(HL)","");
                         break;
                     case 0x6F:
-                        cout << "\t  LD L,A";
+                        printLine("LD L,A","");
                         break;
                     case 0x70:
-                        cout << "\t  LD (HL),B";
+                        printLine("LD (HL),B","");
                         break;
                     case 0x71:
-                        cout << "\t  LD (HL),C";
+                        printLine("LD (HL),C","");
                         break;
                     case 0x72:
-                        cout << "\t  LD (HL),D";
+                        printLine("LD (HL),D","");
                         break;
                     case 0x73:
-                        cout << "\t  LD (HL),E";
+                        printLine("LD (HL),E","");
                         break;
                     case 0x74:
-                        cout << "\t  LD (HL),H";
+                        printLine("LD (HL),H","");
                         break;
                     case 0x75:
-                        cout << "\t  LD (HL),L";
+                        printLine("LD (HL),L","");
                         break;
                     case 0x76:
-                        cout << "\t  HALT";
+                        printLine("HALT","");
                         break;
                     case 0x77:
-                        cout << "\t  LD (HL),A";
+                        printLine("LD (HL),A","");
                         break;
                     case 0x78:
-                        cout << "\t  LD A,B";
+                        printLine("LD A,B","");
                         break;
                     case 0x79:
-                        cout << "\t  LD A,C";
+                        printLine("LD A,C","");
                         break;
                     case 0x7A:
-                        cout << "\t  LD A,D";
+                        printLine("LD A,D","");
                         break;
                     case 0x7B:
-                        cout << "\t  LD A,E";
+                        printLine("LD A,E","");
                         break;
                     case 0x7C:
-                        cout << "\t  LD A,H";
+                        printLine("LD A,H","");
                         break;
                     case 0x7D:
-                        cout << "\t  LD A,L";
+                        printLine("LD A,L","");
                         break;
                     case 0x7E:
-                        cout << "\t  LD A,(HL)";
+                        printLine("LD A,(HL)","");
                         break;
                     case 0x7F:
-                        cout << "\t  LD A,A";
+                        printLine("LD A,A","");
                         break;
                     case 0x80:
-                        cout << "\t  ADD A,B\t\t\t\t\tA+B\tAdd the values in registers A and B, with the result stored in A";
+                        printLine("ADD A,B","A+B\tAdd the values in registers A and B, with the result stored in A");
                         break;
                     case 0x81:
-                        cout << "\t  ADD A,C\t\t\t\t\tA+C\tAdd the values in registers A and C, with the result stored in A";
+                        printLine("ADD A,C","A+C\tAdd the values in registers A and C, with the result stored in A");
                         break;
                     case 0x82:
-                        cout << "\t  ADD A,D\t\t\t\t\tA+D\tAdd the values in registers A and D, with the result stored in A";
+                        printLine("ADD A,D","A+D\tAdd the values in registers A and D, with the result stored in A");
                         break;
                     case 0x83:
-                        cout << "\t  ADD A,E\t\t\t\t\tA+E\tAdd the values in registers A and E, with the result stored in A";
+                        printLine("ADD A,E","A+E\tAdd the values in registers A and E, with the result stored in A");
                         break;
                     case 0x84:
-                        cout << "\t  ADD A,H\t\t\t\t\tA+H\tAdd the values in registers A and H, with the result stored in A";
+                        printLine("ADD A,H","A+H\tAdd the values in registers A and H, with the result stored in A");
                         break;
                     case 0x85:
-                        cout << "\t  ADD A,L\t\t\t\t\tA+L\tAdd the values in registers A and L, with the result stored in A";
+                        printLine("ADD A,L","A+L\tAdd the values in registers A and L, with the result stored in A");
                         break;
                     case 0x86:
-                        cout << "\t  ADD A,(HL)\t\t\t\t\tA+HL\tAdd the values in registers A and HL, with the result stored in A";
+                        printLine("ADD A,(HL)","A+HL\tAdd the values in registers A and HL, with the result stored in A");
                         break;
                     case 0x87:
-                        cout << "\t  ADD A,A\t\t\t\t\tA+A\tAdd the values in registers A and A, with the result stored in A";
+                        printLine("ADD A,A","A+A\tAdd the values in registers A and A, with the result stored in A");
                         break;
                     case 0x88:
-                        cout << "\t  ADC A,B";
+                        printLine("ADC A,B","");
                         break;
                     case 0x89:
                         cout << "\t  ADC A,C";
@@ -664,32 +672,31 @@ int main(int argc, char * argv[])
                         break;
 
                     case 0xA0:
-                        cout << "\t  AND B\t\t\t\t\tB && A\tDo the binary AND operation against B and A";
+                        printLine("AND B","B && A\tDo the binary AND operation against B and A");
                         break;
                     case 0xA1:
-                        cout << "\t  AND C\t\t\t\t\tC && A\tDo the binary AND operation against C and A";
+                        printLine("AND C","C && A\tDo the binary AND operation against C and A");
                         break;
                     case 0xA2:
-                        cout << "\t  AND D\t\t\t\t\tD && A\tDo the binary AND operation against D and A";
+                        printLine("AND D","D && A\tDo the binary AND operation against D and A");
                         break;
                     case 0xA3:
-                        cout << "\t  AND E\t\t\t\t\tE && A\tDo the binary AND operation against E and A";
+                        printLine("AND E","E && A\tDo the binary AND operation against E and A");
                         break;
                     case 0xA4:
-                        cout << "\t  AND H\t\t\t\t\tH && A\tDo the binary AND operation against H and A";
+                        printLine("AND H","H && A\tDo the binary AND operation against H and A");
                         break;
                     case 0xA5:
-                        cout << "\t  AND L\t\t\t\t\tL && A\tDo the binary AND operation against L and A";
+                        printLine("AND L","L && A\tDo the binary AND operation against L and A");
                         break;
                     case 0xA6:
-                        cout << "\t  AND (HL)\t\t\t\tHL && A\tDo the binary AND operation against HL and A";
+                        printLine("AND (HL)","HL && A\tDo the binary AND operation against HL and A");
                         break;
                     case 0xA7: //AND A               
-
-                        cout << "\t  AND A\t\t\t\t\tA && A\tDo the binary AND operation against A and A";
+                        printLine("AND A","A && A\tDo the binary AND operation against A and A");
                         break;
                     case 0xA8:
-                        cout << "\t  XOR B\t\t\t\t\tA XOR B\tXor the values in registers A and B, with the result stored in A";
+                        printLine("XOR B","A XOR B\tXor the values in registers A and B, with the result stored in A");
                         break;
                     case 0xA9:
                         cout << "\t  XOR C\t\t\t\t\tA XOR C\tXor the values in registers A and C, with the result stored in A";
@@ -1610,7 +1617,13 @@ int main(int argc, char * argv[])
                     case 0xCC:
                         cout << "\t  CALL Z,a16";
                         break;
-                    case 0xCD:
+                    case 0xCD: //CALL a16
+
+                        byte1 = getNext8Bits(inputfile);
+                        byte2 = getNext8Bits(inputfile);
+                       
+                        print16BitLine("CALL ", "Call a function at the address specified", "->PC", byte1,byte2);
+
                         cout << "\t  CALL a16";
                         break;
                     case 0xCE:
