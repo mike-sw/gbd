@@ -35,17 +35,20 @@ void print8BitLine(string instruction, string description, string impactedRegist
     printByteAsHex(byte1);
 
     //Print the value of these bytes into our function
-    cout << setfill('*') << setw(15) << instruction;
+    //cout << setfill('*') << setw(15) << instruction;
+    cout << "\t\t";
     printByteAsHex(byte1); //Print the value
-    cout << setfill('-') << setw(30);
+    //cout << setfill('-') << setw(30);
+    cout << "\t\t";
 
     //Print the value of these bytes into the description of this function
     printByteAsHex(byte1);
     cout << impactedRegister;
-    cout << setfill('+') << setw(45) << description;
+    //cout << setfill('+') << setw(45) << description;
+    cout << "\t" << description;
 
     //Advance our addresses appropriately
-    counter=counter+1;
+    counter=counter+2;
 }
 
 void print16BitLine(string instruction, string description, string impactedRegister, unsigned char byte1, unsigned char byte2)
@@ -55,25 +58,31 @@ void print16BitLine(string instruction, string description, string impactedRegis
     printByteAsHex(byte2);
                 
     //Print the value of these bytes into our function
-    cout << setfill('*') << setw(15) << instruction;
+    //cout << setfill('*') << setw(15) << instruction;
+    cout << "\t\t";
     printByteAsHex(byte1);
     printByteAsHex(byte2);
-    cout << setfill('-') << setw(30);
+    //cout << setfill('-') << setw(30);
+    cout << "\t\t";
 
     //Print the value of these bytes into the description of this function
     printByteAsHex(byte1);
     printByteAsHex(byte2);
     cout << impactedRegister;
-    cout << setfill('+') << setw(45) << description;
+    cout << "\t" << description;
+    //cout << setfill('+') << setw(45) << description;
 
     //Advance our addresses appropriately
-    counter=counter+2;
+    counter=counter+3;
 }
 
 void printLine(string instruction, string description)
 {
-    cout << setfill('*') << setw(15) << instruction;
-    cout << setfill('+') << setw(45) << description;
+    //cout << setfill('*') << setw(15) << instruction;
+    //cout << setfill('+') << setw(45) << description;
+
+    cout << "\t\t" << instruction << "\t\t" << description;
+    counter++;
 }
 
 int main(int argc, char * argv[])
@@ -185,11 +194,11 @@ int main(int argc, char * argv[])
 
                         break;
                     case 0x02:
-                        cout << "\t  LD (BC),A";
+                        printLine("LD (BC),A","");
                         break;
                     case 0x03:
                         printLine("INC BC", "Increment Register");
-                        //cout << "\t  INC BC\t\t\t\t\tIncrement Register";
+                        //cout << "INC BC\t\t\t\t\tIncrement Register";
                         break;
                     case 0x04:
                         printLine("INC B","Increment Register");
@@ -208,7 +217,7 @@ int main(int argc, char * argv[])
                         printLine("RLCA","Rotate Left, carry A");
                         break;
                     case 0x08:
-                        cout << "\t  LD (a16),SP";
+                        printLine("LD (a16),SP", "");
                         break;
                     case 0x09:
                         printLine("ADD HL, BC", "");
@@ -226,7 +235,7 @@ int main(int argc, char * argv[])
                         printLine("DEC C","Decrement Register");
                         break;
                     case 0x0E:
-                        cout << "\t  LD C,d8";
+                        printLine("LD C,d8", "");
                         break;
                     case 0x0F:
                         printLine("RRCA","");
@@ -236,7 +245,7 @@ int main(int argc, char * argv[])
                         printLine("STOP 0","");
                         break;
                     case 0x11:
-                        cout << "\t  LD DE,d16";
+                        printLine("LD DE,d16", "");
                         break;
                     case 0x12:
                         printLine("LD (DE),A","");
@@ -251,13 +260,13 @@ int main(int argc, char * argv[])
                         printLine("DEC D", "Decrement Register");
                         break;
                     case 0x16:
-                        cout << "\t  LD D,d8";
+                        printLine("LD D,d8", "");
                         break;
                     case 0x17:
                         printLine("RLA","");
                         break;
                     case 0x18:
-                        cout << "\t  JR r8";
+                        printLine("JR r8", "");
                         break;
                     case 0x19:
                         printLine("ADD HL,DE","");
@@ -275,17 +284,17 @@ int main(int argc, char * argv[])
                         printLine("DEC E", "Decrement Register");
                         break;
                     case 0x1E:
-                        cout << "\t  LD E,d8";
+                        printLine("LD E,d8", "");
                         break;
                     case 0x1F:
                         printLine("RRA","");
                         break;
 
                     case 0x20:
-                        cout << "\t  JR NZ,r8";
+                        printLine("JR NZ,r8", "");
                         break;
                     case 0x21:
-                        cout << "\t  LD HL,d16";
+                        printLine("LD HL,d16", "");
                         break;
                     case 0x22:
                         printLine("LD(HL+),A","");
@@ -300,13 +309,13 @@ int main(int argc, char * argv[])
                         printLine("DEC H","Decrement Register");
                         break;
                     case 0x26:
-                        cout << "\t  LD H,d8";
+                        printLine("LD H,d8", "");
                         break;
                     case 0x27:
                         printLine("DAA","");
                         break;
                     case 0x28:
-                        cout << "\t  JR Z,r8";
+                        printLine("JR Z,r8", "");
                         break;
                     case 0x29:
                         printLine("ADD HL,HL","");
@@ -324,17 +333,17 @@ int main(int argc, char * argv[])
                         printLine("DEC L","Decrement Register");
                         break;
                     case 0x2E:
-                        cout << "\t  LD L,d8";
+                        printLine("LD L,d8", "");
                         break;
                     case 0x2F:
                         printLine("CPL","");
                         break;
 
                     case 0x30:
-                        cout << "\t  JR NC,r8";
+                        printLine("JR NC,r8", "");
                         break;
                     case 0x31:
-                        cout << "\t  LD SP,d16";
+                        printLine("LD SP,d16", "");
                         break;
                     case 0x32:
                         printLine("LD (HL-),A","");
@@ -349,13 +358,13 @@ int main(int argc, char * argv[])
                         printLine("DEC (HL)","Decrement Register");
                         break;
                     case 0x36:
-                        cout << "\t  LD (HL),d8";
+                        printLine("LD (HL),d8", "");
                         break;
                     case 0x37:
                         printLine("SCF","");
                         break;
                     case 0x38:
-                        cout << "\t  JR C,r8";
+                        printLine("JR C,r8", "");
                         break;
                     case 0x39:
                         printLine("ADD HL,SP","");
@@ -373,7 +382,7 @@ int main(int argc, char * argv[])
                         printLine("DEC A","Decrement Register");
                         break;
                     case 0x3E:
-                        cout << "\t  LD A,d8";
+                        printLine("LD A,d8", "");
                         break;
                     case 0x3F:
                         printLine("CCF","");
@@ -601,74 +610,74 @@ int main(int argc, char * argv[])
                         printLine("ADC A,B","");
                         break;
                     case 0x89:
-                        cout << "\t  ADC A,C";
+                        printLine("ADC A,C","");
                         break;
                     case 0x8A:
-                        cout << "\t  ADC A,D";
+                        printLine("ADC A,D","");
                         break;
                     case 0x8B:
-                        cout << "\t  ADC A,E";
+                        printLine("ADC A,E","");
                         break;
                     case 0x8C:
-                        cout << "\t  ADC A,H";
+                        printLine("ADC A,H","");
                         break;
                     case 0x8D:
-                        cout << "\t  ADC A,L";
+                        printLine("ADC A,L","");
                         break;
                     case 0x8E:
-                        cout << "\t  ADC A,(HL)";
+                        printLine("ADC A,(HL)","");
                         break;
                     case 0x8F:
-                        cout << "\t  ADC A,A";
+                        printLine("ADC A,A","");
                         break;
 
                     case 0x90:
-                        cout << "\t  SUB B";
+                        printLine("SUB B","");
                         break;
                     case 0x91:
-                        cout << "\t  SUB C";
+                        printLine("SUB C","");
                         break;
                     case 0x92:
-                        cout << "\t  SUB D";
+                        printLine("SUB D","");
                         break;
                     case 0x93:
-                        cout << "\t  SUB E";
+                        printLine("SUB E","");
                         break;
                     case 0x94:
-                        cout << "\t  SUB H";
+                        printLine("SUB H","");
                         break;
                     case 0x95:
-                        cout << "\t  SUB L";
+                        printLine("SUB L","");
                         break;
                     case 0x96:
-                        cout << "\t  SUB (HL)";
+                        printLine("SUB (HL)","");
                         break;
                     case 0x97:
-                        cout << "\t  SUB A";
+                        printLine("SUB A","");
                         break;
                     case 0x98:
-                        cout << "\t  SBC A,B";
+                        printLine("SBC A,B","");
                         break;
                     case 0x99:
-                        cout << "\t  SBC A,C";
+                        printLine("SBC A,C","");
                         break;
                     case 0x9A:
-                        cout << "\t  SBC A,D";
+                        printLine("SBC A,D","");
                         break;
                     case 0x9B:
-                        cout << "\t  SBC A,E";
+                        printLine("SBC A,E","");
                         break;
                     case 0x9C:
-                        cout << "\t  SBC A,H";
+                        printLine("SBC A,H","");
                         break;
                     case 0x9D:
-                        cout << "\t  SBC A,L";
+                        printLine("SBC A,L","");
                         break;
                     case 0x9E:
-                        cout << "\t  SBC A,(HL)";
+                        printLine("SBC A,(HL)","");
                         break;
                     case 0x9F:
-                        cout << "\t  SBC A,A";
+                        printLine("SBC A,A","");
                         break;
 
                     case 0xA0:
@@ -699,84 +708,84 @@ int main(int argc, char * argv[])
                         printLine("XOR B","A XOR B\tXor the values in registers A and B, with the result stored in A");
                         break;
                     case 0xA9:
-                        cout << "\t  XOR C\t\t\t\t\tA XOR C\tXor the values in registers A and C, with the result stored in A";
+                        printLine("XOR C","A XOR C\tXor the values in registers A and C, with the result stored in A");
                         break;
                     case 0xAA:
-                        cout << "\t  XOR D\t\t\t\t\tA XOR D\tXor the values in registers A and D, with the result stored in A";
+                        printLine("XOR D","A XOR D\tXor the values in registers A and D, with the result stored in A");
                         break;
                     case 0xAB:
-                        cout << "\t  XOR E\t\t\t\t\tA XOR E\tXor the values in registers A and E, with the result stored in A";
+                        printLine("XOR E","A XOR E\tXor the values in registers A and E, with the result stored in A");
                         break;
                     case 0xAC:
-                        cout << "\t  XOR H\t\t\t\t\tA XOR H\tXor the values in registers A and H, with the result stored in A";
+                        printLine("XOR H","A XOR H\tXor the values in registers A and H, with the result stored in A");
                         break;
                     case 0xAD:
-                        cout << "\t  XOR L\t\t\t\t\tA XOR L\tXor the values in registers A and L, with the result stored in A";
+                        printLine("XOR L","A XOR L\tXor the values in registers A and L, with the result stored in A");
                         break;
                     case 0xAE:
-                        cout << "\t  XOR (HL)\t\t\t\t\tA XOR HL\tXor the values in registers A and HL, with the result stored in A";
+                        printLine("XOR (HL)","A XOR HL\tXor the values in registers A and HL, with the result stored in A");
                         break;
                     case 0xAF:
-                        cout << "\t  XOR A\t\t\t\t\tA XOR A\tXor the values in register A against itself. A now equals zero.";
+                        printLine("XOR A","A XOR A\tXor the values in register A against itself. A now equals zero.");
                         break;
 
                     case 0xB0:
-                        cout << "\t  OR B\t\t\t\t\tA || B\tOr the values in registers A and B, with the result stored in A";
+                        printLine("OR B","A || B\tOr the values in registers A and B, with the result stored in A");
                         break;
                     case 0xB1:
-                        cout << "\t  OR C";
+                        printLine("OR C","");
                         break;
                     case 0xB2:
-                        cout << "\t  OR D";
+                        printLine("OR D","");
                         break;
                     case 0xB3:
-                        cout << "\t  OR E";
+                        printLine("OR E","");
                         break;
                     case 0xB4:
-                        cout << "\t  OR H";
+                        printLine("OR H","");
                         break;
                     case 0xB5:
-                        cout << "\t  OR L";
+                        printLine("OR L","");
                         break;
                     case 0xB6:
-                        cout << "\t  OR (HL)";
+                        printLine("OR (HL)","");
                         break;
                     case 0xB7:
-                        cout << "\t  OR A";
+                        printLine("OR A","");
                         break;
                     case 0xB8:
-                        cout << "\t  CP B";
+                        printLine("CP B","");
                         break;
                     case 0xB9:
-                        cout << "\t  CP C";
+                        printLine("CP C","");
                         break;
                     case 0xBA:
-                        cout << "\t  CP D";
+                        printLine("CP D","");
                         break;
                     case 0xBB:
-                        cout << "\t  CP E";
+                        printLine("CP E","");
                         break;
                     case 0xBC:
-                        cout << "\t  CP H";
+                        printLine("CP H","");
                         break;
                     case 0xBD:
-                        cout << "\t  CP L";
+                        printLine("CP L","");
                         break;
                     case 0xBE:
-                        cout << "\t  CP (HL)";
+                        printLine("CP (HL)","");
                         break;
                     case 0xBF:
-                        cout << "\t  CP A";
+                        printLine("CP A","");
                         break;
 
                     case 0xC0:
-                        cout << "\t  RET NZ";
+                        printLine("RET NZ","");
                         break;
                     case 0xC1:
-                        cout << "\t  POP BC";
+                        printLine("POP BC","");
                         break;
                     case 0xC2:
-                        cout << "\t  JP NZ,a16";
+                        printLine("JP NZ,a16","");
                         break;
                     case 0xC3: //JP a16
                         byte1 = getNext8Bits(inputfile);
@@ -784,28 +793,28 @@ int main(int argc, char * argv[])
                        
                         print16BitLine("JP ", "Jump to the specified 16-bit address", "->PC", byte1, byte2);
 
-                        //cout << "\t  JP a16";
+                        //printLine("JP a16", "");
                         break;
                     case 0xC4:
-                        cout << "\t  CALL NZ,a16";
+                        printLine("CALL NZ,a16", "");
                         break;
                     case 0xC5:
-                        cout << "\t  PUSH BC";
+                        printLine("PUSH BC","");
                         break;
                     case 0xC6:
-                        cout << "\t  ADD A,d8";
+                        printLine("ADD A,d8", "");
                         break;
                     case 0xC7:
-                        cout << "\t  RST 00H\t\t\t\t\tCall the code at 00"; //According to https://www.cemetech.net/forum/viewtopic.php?t=6744
+                        printLine("RST 00H\t\t\t\t\tCall the code at 00",""); //According to https://www.cemetech.net/forum/viewtopic.php?t=6744
                         break;
                     case 0xC8:
-                        cout << "\t  RET Z";
+                        printLine("RET Z","");
                         break;
                     case 0xC9:
-                        cout << "\t  RET";
+                        printLine("RET","");
                         break;
                     case 0xCA:
-                        cout << "\t  JP Z,a16";
+                        printLine("JP Z,a16", "");
                         break;
                     case 0xCB:
                         /*
@@ -825,797 +834,797 @@ int main(int argc, char * argv[])
                         switch(thisByteCB)
                         {
                             case 0x00:
-                                cout << "\t  RLC B";
+                                printLine("RLC B","");
                                 break;
                             case 0x01:
-                                cout << "\t  RLC C";
+                                printLine("RLC C","");
                                 break;
                             case 0x02:
-                                cout << "\t  RLC D";
+                                printLine("RLC D","");
                                 break;
                             case 0x03:
-                                cout << "\t  RLC E";
+                                printLine("RLC E","");
                                 break;
                             case 0x04:
-                                cout << "\t  RLC H";
+                                printLine("RLC H","");
                                 break;
                             case 0x05:
-                                cout << "\t  RLC L";
+                                printLine("RLC L","");
                                 break;
                             case 0x06:
-                                cout << "\t  RLC (HL)";
+                                printLine("RLC (HL)","");
                                 break;
                             case 0x07:
-                                cout << "\t  RLC A";
+                                printLine("RLC A","");
                                 break;
                             case 0x08:
-                                cout << "\t  RRC B";
+                                printLine("RRC B","");
                                 break;
                             case 0x09:
-                                cout << "\t  RRC C";
+                                printLine("RRC C","");
                                 break;
                             case 0x0A:
-                                cout << "\t  RRC D";
+                                printLine("RRC D","");
                                 break;
                             case 0x0B:
-                                cout << "\t  RRC E";
+                                printLine("RRC E","");
                                 break;
                             case 0x0C:
-                                cout << "\t  RRC H";
+                                printLine("RRC H","");
                                 break;
                             case 0x0D:
-                                cout << "\t  RRC L";
+                                printLine("RRC L","");
                                 break;
                             case 0x0E:
-                                cout << "\t  RRC (HL)";
+                                printLine("RRC (HL)","");
                                 break;
                             case 0x0F:
-                                cout << "\t  RRC A";
+                                printLine("RRC A","");
                                 break;
 
                             case 0x10:
-                                cout << "\t  RL B";
+                                printLine("RL B","");
                                 break;
                             case 0x11:
-                                cout << "\t  RL C";
+                                printLine("RL C","");
                                 break;
                             case 0x12:
-                                cout << "\t  RL D";
+                                printLine("RL D","");
                                 break;
                             case 0x13:
-                                cout << "\t  RL E";
+                                printLine("RL E","");
                                 break;
                             case 0x14:
-                                cout << "\t  RL H";
+                                printLine("RL H","");
                                 break;
                             case 0x15:
-                                cout << "\t  RLC L";
+                                printLine("RLC L","");
                                 break;
                             case 0x16:
-                                cout << "\t  RLC (HL)";
+                                printLine("RLC (HL)","");
                                 break;
                             case 0x17:
-                                cout << "\t  RL A";
+                                printLine("RL A","");
                                 break;
                             case 0x18:
-                                cout << "\t  RR B";
+                                printLine("RR B","");
                                 break;
                             case 0x19:
-                                cout << "\t  RR C";
+                                printLine("RR C","");
                                 break;
                             case 0x1A:
-                                cout << "\t  RR D";
+                                printLine("RR D","");
                                 break;
                             case 0x1B:
-                                cout << "\t  RR E";
+                                printLine("RR E","");
                                 break;
                             case 0x1C:
-                                cout << "\t  RR H";
+                                printLine("RR H","");
                                 break;
                             case 0x1D:
-                                cout << "\t  RR L";
+                                printLine("RR L","");
                                 break;
                             case 0x1E:
-                                cout << "\t  RR (HL)";
+                                printLine("RR (HL)","");
                                 break;
                             case 0x1F:
-                                cout << "\t  RR A";
+                                printLine("RR A","");
                                 break;
 
                             case 0x20:
-                                cout << "\t  SLA B";
+                                printLine("SLA B","");
                                 break;
                             case 0x21:
-                                cout << "\t  SLA C";
+                                printLine("SLA C","");
                                 break;
                             case 0x22:
-                                cout << "\t  SLA D";
+                                printLine("SLA D","");
                                 break;
                             case 0x23:
-                                cout << "\t  SLA E";
+                                printLine("SLA E","");
                                 break;
                             case 0x24:
-                                cout << "\t  SLA H";
+                                printLine("SLA H","");
                                 break;
                             case 0x25:
-                                cout << "\t  SLA L";
+                                printLine("SLA L","");
                                 break;
                             case 0x26:
-                                cout << "\t  SLA (HL)";
+                                printLine("SLA (HL)","");
                                 break;
                             case 0x27:
-                                cout << "\t  SLA A";
+                                printLine("SLA A","");
                                 break;
                             case 0x28:
-                                cout << "\t  SRA B";
+                                printLine("SRA B","");
                                 break;
                             case 0x29:
-                                cout << "\t  SRA C";
+                                printLine("SRA C","");
                                 break;
                             case 0x2A:
-                                cout << "\t  SRA D";
+                                printLine("SRA D","");
                                 break;
                             case 0x2B:
-                                cout << "\t  SRA E";
+                                printLine("SRA E","");
                                 break;
                             case 0x2C:
-                                cout << "\t  SRA H";
+                                printLine("SRA H","");
                                 break;
                             case 0x2D:
-                                cout << "\t  SRA L";
+                                printLine("SRA L","");
                                 break;
                             case 0x2E:
-                                cout << "\t  SRA (HL)";
+                                printLine("SRA (HL)","");
                                 break;
                             case 0x2F:
-                                cout << "\t  SRA A";
+                                printLine("SRA A","");
                                 break;
 
                             case 0x30:
-                                cout << "\t  SWAP B";
+                                printLine("SWAP B","");
                                 break;
                             case 0x31:
-                                cout << "\t  SWAP C";
+                                printLine("SWAP C","");
                                 break;
                             case 0x32:
-                                cout << "\t  SWAP D";
+                                printLine("SWAP D","");
                                 break;
                             case 0x33:
-                                cout << "\t  SWAP E";
+                                printLine("SWAP E","");
                                 break;
                             case 0x34:
-                                cout << "\t  SWAP H";
+                                printLine("SWAP H","");
                                 break;
                             case 0x35:
-                                cout << "\t  SWAP L";
+                                printLine("SWAP L","");
                                 break;
                             case 0x36:
-                                cout << "\t  SWAP (HL)";
+                                printLine("SWAP (HL)","");
                                 break;
                             case 0x37:
-                                cout << "\t  SWAP A";
+                                printLine("SWAP A","");
                                 break;
                             case 0x38:
-                                cout << "\t  SRL B";
+                                printLine("SRL B","");
                                 break;
                             case 0x39:
-                                cout << "\t  SRL C";
+                                printLine("SRL C","");
                                 break;
                             case 0x3A:
-                                cout << "\t  SRL D";
+                                printLine("SRL D","");
                                 break;
                             case 0x3B:
-                                cout << "\t  SRL E";
+                                printLine("SRL E","");
                                 break;
                             case 0x3C:
-                                cout << "\t  SRL H";
+                                printLine("SRL H","");
                                 break;
                             case 0x3D:
-                                cout << "\t  SRL L";
+                                printLine("SRL L","");
                                 break;
                             case 0x3E:
-                                cout << "\t  SRL (HL)";
+                                printLine("SRL (HL)","");
                                 break;
                             case 0x3F:
-                                cout << "\t  SRL A";
+                                printLine("SRL A","");
                                 break;
 
                             case 0x40:
-                                cout << "\t  BIT 0,B";
+                                printLine("BIT 0,B","");
                                 break;
                             case 0x41:
-                                cout << "\t  BIT 0,C";
+                                printLine("BIT 0,C","");
                                 break;
                             case 0x42:
-                                cout << "\t  BIT 0,D";
+                                printLine("BIT 0,D","");
                                 break;
                             case 0x43:
-                                cout << "\t  BIT 0,E";
+                                printLine("BIT 0,E","");
                                 break;
                             case 0x44:
-                                cout << "\t  BIT 0,H";
+                                printLine("BIT 0,H","");
                                 break;
                             case 0x45:
-                                cout << "\t  BIT 0,L";
+                                printLine("BIT 0,L","");
                                 break;
                             case 0x46:
-                                cout << "\t  BIT 0,(HL)";
+                                printLine("BIT 0,(HL)","");
                                 break;
                             case 0x47:
-                                cout << "\t  BIT 0,A";
+                                printLine("BIT 0,A","");
                                 break;
                             case 0x48:
-                                cout << "\t  BIT 1,B";
+                                printLine("BIT 1,B","");
                                 break;
                             case 0x49:
-                                cout << "\t  BIT 1,C";
+                                printLine("BIT 1,C","");
                                 break;
                             case 0x4A:
-                                cout << "\t  BIT 1,D";
+                                printLine("BIT 1,D","");
                                 break;
                             case 0x4B:
-                                cout << "\t  BIT 1,E";
+                                printLine("BIT 1,E","");
                                 break;
                             case 0x4C:
-                                cout << "\t  BIT 1,H";
+                                printLine("BIT 1,H","");
                                 break;
                             case 0x4D:
-                                cout << "\t  BIT 1,L";
+                                printLine("BIT 1,L","");
                                 break;
                             case 0x4E:
-                                cout << "\t  BIT 1,(HL)";
+                                printLine("BIT 1,(HL)","");
                                 break;
                             case 0x4F:
-                                cout << "\t  BIT 1,A";
+                                printLine("BIT 1,A","");
                                 break;
 
                             case 0x50:
-                                cout << "\t  BIT 2,B";
+                                printLine("BIT 2,B","");
                                 break;
                             case 0x51:
-                                cout << "\t  BIT 2,C";
+                                printLine("BIT 2,C","");
                                 break;
                             case 0x52:
-                                cout << "\t  BIT 2,D";
+                                printLine("BIT 2,D","");
                                 break;
                             case 0x53:
-                                cout << "\t  BIT 2,E";
+                                printLine("BIT 2,E","");
                                 break;
                             case 0x54:
-                                cout << "\t  BIT 2,H";
+                                printLine("BIT 2,H","");
                                 break;
                             case 0x55:
-                                cout << "\t  BIT 2,L";
+                                printLine("BIT 2,L","");
                                 break;
                             case 0x56:
-                                cout << "\t  BIT 2,(HL)";
+                                printLine("BIT 2,(HL)","");
                                 break;
                             case 0x57:
-                                cout << "\t  BIT 2,A";
+                                printLine("BIT 2,A","");
                                 break;
                             case 0x58:
-                                cout << "\t  BIT 3,B";
+                                printLine("BIT 3,B","");
                                 break;
                             case 0x59:
-                                cout << "\t  BIT 3,C";
+                                printLine("BIT 3,C","");
                                 break;
                             case 0x5A:
-                                cout << "\t  BIT 3,D";
+                                printLine("BIT 3,D","");
                                 break;
                             case 0x5B:
-                                cout << "\t  BIT 3,E";
+                                printLine("BIT 3,E","");
                                 break;
                             case 0x5C:
-                                cout << "\t  BIT 3,H";
+                                printLine("BIT 3,H","");
                                 break;
                             case 0x5D:
-                                cout << "\t  BIT 3,L";
+                                printLine("BIT 3,L","");
                                 break;
                             case 0x5E:
-                                cout << "\t  BIT 3,(HL)";
+                                printLine("BIT 3,(HL)","");
                                 break;
                             case 0x5F:
-                                cout << "\t  BIT 3,A";
+                                printLine("BIT 3,A","");
                                 break;
 
                             case 0x60:
-                                cout << "\t  BIT 4,B";
+                                printLine("BIT 4,B","");
                                 break;
                             case 0x61:
-                                cout << "\t  BIT 4,C";
+                                printLine("BIT 4,C","");
                                 break;
                             case 0x62:
-                                cout << "\t  BIT 4,D";
+                                printLine("BIT 4,D","");
                                 break;
                             case 0x63:
-                                cout << "\t  BIT 4,E";
+                                printLine("BIT 4,E","");
                                 break;
                             case 0x64:
-                                cout << "\t  BIT 4,H";
+                                printLine("BIT 4,H","");
                                 break;
                             case 0x65:
-                                cout << "\t  BIT 4,L";
+                                printLine("BIT 4,L","");
                                 break;
                             case 0x66:
-                                cout << "\t  BIT 4,(HL)";
+                                printLine("BIT 4,(HL)","");
                                 break;
                             case 0x67:
-                                cout << "\t  BIT 4,A";
+                                printLine("BIT 4,A","");
                                 break;
                             case 0x68:
-                                cout << "\t  BIT 5,B";
+                                printLine("BIT 5,B","");
                                 break;
                             case 0x69:
-                                cout << "\t  BIT 5,C";
+                                printLine("BIT 5,C","");
                                 break;
                             case 0x6A:
-                                cout << "\t  BIT 5,D";
+                                printLine("BIT 5,D","");
                                 break;
                             case 0x6B:
-                                cout << "\t  BIT 5,E";
+                                printLine("BIT 5,E","");
                                 break;
                             case 0x6C:
-                                cout << "\t  BIT 5,H";
+                                printLine("BIT 5,H","");
                                 break;
                             case 0x6D:
-                                cout << "\t  BIT 5,L";
+                                printLine("BIT 5,L","");
                                 break;
                             case 0x6E:
-                                cout << "\t  BIT 5,(HL)";
+                                printLine("BIT 5,(HL)","");
                                 break;
                             case 0x6F:
-                                cout << "\t  BIT 5,A";
+                                printLine("BIT 5,A","");
                                 break;
 
                             case 0x70:
-                                cout << "\t  BIT 6,B";
+                                printLine("BIT 6,B","");
                                 break;
                             case 0x71:
-                                cout << "\t  BIT 6,C";
+                                printLine("BIT 6,C","");
                                 break;
                             case 0x72:
-                                cout << "\t  BIT 6,D";
+                                printLine("BIT 6,D","");
                                 break;
                             case 0x73:
-                                cout << "\t  BIT 6,E";
+                                printLine("BIT 6,E","");
                                 break;
                             case 0x74:
-                                cout << "\t  BIT 6,H";
+                                printLine("BIT 6,H","");
                                 break;
                             case 0x75:
-                                cout << "\t  BIT 6,L";
+                                printLine("BIT 6,L","");
                                 break;
                             case 0x76:
-                                cout << "\t  BIT 6,(HL)";
+                                printLine("BIT 6,(HL)","");
                                 break;
                             case 0x77:
-                                cout << "\t  BIT 6,A";
+                                printLine("BIT 6,A","");
                                 break;
                             case 0x78:
-                                cout << "\t  BIT 7,B";
+                                printLine("BIT 7,B","");
                                 break;
                             case 0x79:
-                                cout << "\t  BIT 7,C";
+                                printLine("BIT 7,C","");
                                 break;
                             case 0x7A:
-                                cout << "\t  BIT 7,D";
+                                printLine("BIT 7,D","");
                                 break;
                             case 0x7B:
-                                cout << "\t  BIT 7,E";
+                                printLine("BIT 7,E","");
                                 break;
                             case 0x7C:
-                                cout << "\t  BIT 7,H";
+                                printLine("BIT 7,H","");
                                 break;
                             case 0x7D:
-                                cout << "\t  BIT 7,L";
+                                printLine("BIT 7,L","");
                                 break;
                             case 0x7E:
-                                cout << "\t  BIT 7,(HL)";
+                                printLine("BIT 7,(HL)","");
                                 break;
                             case 0x7F:
-                                cout << "\t  BIT 7,A";
+                                printLine("BIT 7,A","");
                                 break;
 
                             case 0x80:
-                                cout << "\t  RES 0,B";
+                                printLine("RES 0,B","");
                                 break;
                             case 0x81:
-                                cout << "\t  RES 0,C";
+                                printLine("RES 0,C","");
                                 break;
                             case 0x82:
-                                cout << "\t  RES 0,D";
+                                printLine("RES 0,D","");
                                 break;
                             case 0x83:
-                                cout << "\t  RES 0,E";
+                                printLine("RES 0,E","");
                                 break;
                             case 0x84:
-                                cout << "\t  RES 0,H";
+                                printLine("RES 0,H","");
                                 break;
                             case 0x85:
-                                cout << "\t  RES 0,L";
+                                printLine("RES 0,L","");
                                 break;
                             case 0x86:
-                                cout << "\t  RES 0,(HL)";
+                                printLine("RES 0,(HL)","");
                                 break;
                             case 0x87:
-                                cout << "\t  RES 0,A";
+                                printLine("RES 0,A","");
                                 break;
                             case 0x88:
-                                cout << "\t  RES 1,B";
+                                printLine("RES 1,B","");
                                 break;
                             case 0x89:
-                                cout << "\t  RES 1,C";
+                                printLine("RES 1,C","");
                                 break;
                             case 0x8A:
-                                cout << "\t  RES 1,D";
+                                printLine("RES 1,D","");
                                 break;
                             case 0x8B:
-                                cout << "\t  RES 1,E";
+                                printLine("RES 1,E","");
                                 break;
                             case 0x8C:
-                                cout << "\t  RES 1,H";
+                                printLine("RES 1,H","");
                                 break;
                             case 0x8D:
-                                cout << "\t  RES 1,L";
+                                printLine("RES 1,L","");
                                 break;
                             case 0x8E:
-                                cout << "\t  RES 1,(HL)";
+                                printLine("RES 1,(HL)","");
                                 break;
                             case 0x8F:
-                                cout << "\t  RES 1,A";
+                                printLine("RES 1,A","");
                                 break;
 
                             case 0x90:
-                                cout << "\t  RES 2,B";
+                                printLine("RES 2,B","");
                                 break;
                             case 0x91:
-                                cout << "\t  RES 2,C";
+                                printLine("RES 2,C","");
                                 break;
                             case 0x92:
-                                cout << "\t  RES 2,D";
+                                printLine("RES 2,D","");
                                 break;
                             case 0x93:
-                                cout << "\t  RES 2,E";
+                                printLine("RES 2,E","");
                                 break;
                             case 0x94:
-                                cout << "\t  RES 2,H";
+                                printLine("RES 2,H","");
                                 break;
                             case 0x95:
-                                cout << "\t  RES 2,L";
+                                printLine("RES 2,L","");
                                 break;
                             case 0x96:
-                                cout << "\t  RES 2,(HL)";
+                                printLine("RES 2,(HL)","");
                                 break;
                             case 0x97:
-                                cout << "\t  RES 2,A";
+                                printLine("RES 2,A","");
                                 break;
                             case 0x98:
-                                cout << "\t  RES 3,B";
+                                printLine("RES 3,B","");
                                 break;
                             case 0x99:
-                                cout << "\t  RES 3,C";
+                                printLine("RES 3,C","");
                                 break;
                             case 0x9A:
-                                cout << "\t  RES 3,D";
+                                printLine("RES 3,D","");
                                 break;
                             case 0x9B:
-                                cout << "\t  RES 3,E";
+                                printLine("RES 3,E","");
                                 break;
                             case 0x9C:
-                                cout << "\t  RES 3,H";
+                                printLine("RES 3,H","");
                                 break;
                             case 0x9D:
-                                cout << "\t  RES 3,L";
+                                printLine("RES 3,L","");
                                 break;
                             case 0x9E:
-                                cout << "\t  RES 3,(HL)";
+                                printLine("RES 3,(HL)","");
                                 break;
                             case 0x9F:
-                                cout << "\t  RES 3,A";
+                                printLine("RES 3,A","");
                                 break;
 
                             case 0xA0:
-                                cout << "\t  RES 4,B";
+                                printLine("RES 4,B","");
                                 break;
                             case 0xA1:
-                                cout << "\t  RES 4,C";
+                                printLine("RES 4,C","");
                                 break;
                             case 0xA2:
-                                cout << "\t  RES 4,D";
+                                printLine("RES 4,D","");
                                 break;
                             case 0xA3:
-                                cout << "\t  RES 4,E";
+                                printLine("RES 4,E","");
                                 break;
                             case 0xA4:
-                                cout << "\t  RES 4,H";
+                                printLine("RES 4,H","");
                                 break;
                             case 0xA5:
-                                cout << "\t  RES 4,L";
+                                printLine("RES 4,L","");
                                 break;
                             case 0xA6:
-                                cout << "\t  RES 4,(HL)";
+                                printLine("RES 4,(HL)","");
                                 break;
                             case 0xA7:
-                                cout << "\t  RES 4,A";
+                                printLine("RES 4,A","");
                                 break;
                             case 0xA8:
-                                cout << "\t  RES 5,B";
+                                printLine("RES 5,B","");
                                 break;
                             case 0xA9:
-                                cout << "\t  RES 5,C";
+                                printLine("RES 5,C","");
                                 break;
                             case 0xAA:
-                                cout << "\t  RES 5,D";
+                                printLine("RES 5,D","");
                                 break;
                             case 0xAB:
-                                cout << "\t  RES 5,E";
+                                printLine("RES 5,E","");
                                 break;
                             case 0xAC:
-                                cout << "\t  RES 5,H";
+                                printLine("RES 5,H","");
                                 break;
                             case 0xAD:
-                                cout << "\t  RES 5,L";
+                                printLine("RES 5,L","");
                                 break;
                             case 0xAE:
-                                cout << "\t  RES 5,(HL)";
+                                printLine("RES 5,(HL)","");
                                 break;
                             case 0xAF:
-                                cout << "\t  RES 5,A";
+                                printLine("RES 5,A","");
                                 break;
 
                             case 0xB0:
-                                cout << "\t  RES 6,B";
+                                printLine("RES 6,B","");
                                 break;
                             case 0xB1:
-                                cout << "\t  RES 6,C";
+                                printLine("RES 6,C","");
                                 break;
                             case 0xB2:
-                                cout << "\t  RES 6,D";
+                                printLine("RES 6,D","");
                                 break;
                             case 0xB3:
-                                cout << "\t  RES 6,E";
+                                printLine("RES 6,E","");
                                 break;
                             case 0xB4:
-                                cout << "\t  RES 6,H";
+                                printLine("RES 6,H","");
                                 break;
                             case 0xB5:
-                                cout << "\t  RES 6,L";
+                                printLine("RES 6,L","");
                                 break;
                             case 0xB6:
-                                cout << "\t  RES 6,(HL)";
+                                printLine("RES 6,(HL)","");
                                 break;
                             case 0xB7:
-                                cout << "\t  RES 6,A";
+                                printLine("RES 6,A","");
                                 break;
                             case 0xB8:
-                                cout << "\t  RES 7,B";
+                                printLine("RES 7,B","");
                                 break;
                             case 0xB9:
-                                cout << "\t  RES 7,C";
+                                printLine("RES 7,C","");
                                 break;
                             case 0xBA:
-                                cout << "\t  RES 7,D";
+                                printLine("RES 7,D","");
                                 break;
                             case 0xBB:
-                                cout << "\t  RES 7,E";
+                                printLine("RES 7,E","");
                                 break;
                             case 0xBC:
-                                cout << "\t  RES 7,H";
+                                printLine("RES 7,H","");
                                 break;
                             case 0xBD:
-                                cout << "\t  RES 7,L";
+                                printLine("RES 7,L","");
                                 break;
                             case 0xBE:
-                                cout << "\t  RES 7,(HL)";
+                                printLine("RES 7,(HL)","");
                                 break;
                             case 0xBF:
-                                cout << "\t  RES 7,A";
+                                printLine("RES 7,A","");
                                 break;
 
                             case 0xC0:
-                                cout << "\t  SET 0,B";
+                                printLine("SET 0,B","");
                                 break;
                             case 0xC1:
-                                cout << "\t  SET 0,C";
+                                printLine("SET 0,C","");
                                 break;
                             case 0xC2:
-                                cout << "\t  SET 0,D";
+                                printLine("SET 0,D","");
                                 break;
                             case 0xC3:
-                                cout << "\t  SET 0,E";
+                                printLine("SET 0,E","");
                                 break;
                             case 0xC4:
-                                cout << "\t  SET 0,H";
+                                printLine("SET 0,H","");
                                 break;
                             case 0xC5:
-                                cout << "\t  SET 0,L";
+                                printLine("SET 0,L","");
                                 break;
                             case 0xC6:
-                                cout << "\t  SET 0,(HL)";
+                                printLine("SET 0,(HL)","");
                                 break;
                             case 0xC7:
-                                cout << "\t  SET 0,A";
+                                printLine("SET 0,A","");
                                 break;
                             case 0xC8:
-                                cout << "\t  SET 1,B";
+                                printLine("SET 1,B","");
                                 break;
                             case 0xC9:
-                                cout << "\t  SET 1,C";
+                                printLine("SET 1,C","");
                                 break;
                             case 0xCA:
-                                cout << "\t  SET 1,D";
+                                printLine("SET 1,D","");
                                 break;
                             case 0xCB:
-                                cout << "\t  SET 1,E";
+                                printLine("SET 1,E","");
                                 break;
                             case 0xCC:
-                                cout << "\t  SET 1,H";
+                                printLine("SET 1,H","");
                                 break;
                             case 0xCD:
-                                cout << "\t  SET 1,L";
+                                printLine("SET 1,L","");
                                 break;
                             case 0xCE:
-                                cout << "\t  SET 1,(HL)";
+                                printLine("SET 1,(HL)","");
                                 break;
                             case 0xCF:
-                                cout << "\t  SET 1,A";
+                                printLine("SET 1,A","");
                                 break;
 
 
                             case 0xD0:
-                                cout << "\t  SET 2,B";
+                                printLine("SET 2,B","");
                                 break;
                             case 0xD1:
-                                cout << "\t  SET 2,C";
+                                printLine("SET 2,C","");
                                 break;
                             case 0xD2:
-                                cout << "\t  SET 2,D";
+                                printLine("SET 2,D","");
                                 break;
                             case 0xD3:
-                                cout << "\t  SET 2,E";
+                                printLine("SET 2,E","");
                                 break;
                             case 0xD4:
-                                cout << "\t  SET 2,H";
+                                printLine("SET 2,H","");
                                 break;
                             case 0xD5:
-                                cout << "\t  SET 2,L";
+                                printLine("SET 2,L","");
                                 break;
                             case 0xD6:
-                                cout << "\t  SET 2,(HL)";
+                                printLine("SET 2,(HL)","");
                                 break;
                             case 0xD7:
-                                cout << "\t  SET 2,A";
+                                printLine("SET 2,A","");
                                 break;
                             case 0xD8:
-                                cout << "\t  SET 3,B";
+                                printLine("SET 3,B","");
                                 break;
                             case 0xD9:
-                                cout << "\t  SET 3,C";
+                                printLine("SET 3,C","");
                                 break;
                             case 0xDA:
-                                cout << "\t  SET 3,D";
+                                printLine("SET 3,D","");
                                 break;
                             case 0xDB:
-                                cout << "\t  SET 3,E";
+                                printLine("SET 3,E","");
                                 break;
                             case 0xDC:
-                                cout << "\t  SET 3,H";
+                                printLine("SET 3,H","");
                                 break;
                             case 0xDD:
-                                cout << "\t  SET 3,L";
+                                printLine("SET 3,L","");
                                 break;
                             case 0xDE:
-                                cout << "\t  SET 3,(HL)";
+                                printLine("SET 3,(HL)","");
                                 break;
                             case 0xDF:
-                                cout << "\t  SET 3,A";
+                                printLine("SET 3,A","");
                                 break;
 
                             case 0xE0:
-                                cout << "\t  SET 4,B";
+                                printLine("SET 4,B","");
                                 break;
                             case 0xE1:
-                                cout << "\t  SET 4,C";
+                                printLine("SET 4,C","");
                                 break;
                             case 0xE2:
-                                cout << "\t  SET 4,D";
+                                printLine("SET 4,D","");
                                 break;
                             case 0xE3:
-                                cout << "\t  SET 4,E";
+                                printLine("SET 4,E","");
                                 break;
                             case 0xE4:
-                                cout << "\t  SET 4,H";
+                                printLine("SET 4,H","");
                                 break;
                             case 0xE5:
-                                cout << "\t  SET 4,L";
+                                printLine("SET 4,L","");
                                 break;
                             case 0xE6:
-                                cout << "\t  SET 4,(HL)";
+                                printLine("SET 4,(HL)","");
                                 break;
                             case 0xE7:
-                                cout << "\t  SET 4,A";
+                                printLine("SET 4,A","");
                                 break;
                             case 0xE8:
-                                cout << "\t  SET 5,B";
+                                printLine("SET 5,B","");
                                 break;
                             case 0xE9:
-                                cout << "\t  SET 5,C";
+                                printLine("SET 5,C","");
                                 break;
                             case 0xEA:
-                                cout << "\t  SET 5,D";
+                                printLine("SET 5,D","");
                                 break;
                             case 0xEB:
-                                cout << "\t  SET 5,E";
+                                printLine("SET 5,E","");
                                 break;
                             case 0xEC:
-                                cout << "\t  SET 5,H";
+                                printLine("SET 5,H","");
                                 break;
                             case 0xED:
-                                cout << "\t  SET 5,L";
+                                printLine("SET 5,L","");
                                 break;
                             case 0xEE:
-                                cout << "\t  SET 5,(HL)";
+                                printLine("SET 5,(HL)","");
                                 break;
                             case 0xEF:
-                                cout << "\t  SET 5,A";
+                                printLine("SET 5,A","");
                                 break;
 
                             case 0xF0:
-                                cout << "\t  SET 6,B";
+                                printLine("SET 6,B","");
                                 break;
                             case 0xF1:
-                                cout << "\t  SET 6,C";
+                                printLine("SET 6,C","");
                                 break;
                             case 0xF2:
-                                cout << "\t  SET 6,D";
+                                printLine("SET 6,D","");
                                 break;
                             case 0xF3:
-                                cout << "\t  SET 6,E";
+                                printLine("SET 6,E","");
                                 break;
                             case 0xF4:
-                                cout << "\t  SET 6,H";
+                                printLine("SET 6,H","");
                                 break;
                             case 0xF5:
-                                cout << "\t  SET 6,L";
+                                printLine("SET 6,L","");
                                 break;
                             case 0xF6:
-                                cout << "\t  SET 6,(HL)";
+                                printLine("SET 6,(HL)","");
                                 break;
                             case 0xF7:
-                                cout << "\t  SET 6,A";
+                                printLine("SET 6,A","");
                                 break;
                             case 0xF8:
-                                cout << "\t  SET 7,B";
+                                printLine("SET 7,B","");
                                 break;
                             case 0xF9:
-                                cout << "\t  SET 7,C";
+                                printLine("SET 7,C","");
                                 break;
                             case 0xFA:
-                                cout << "\t  SET 7,D";
+                                printLine("SET 7,D","");
                                 break;
                             case 0xFB:
-                                cout << "\t  SET 7,E";
+                                printLine("SET 7,E","");
                                 break;
                             case 0xFC:
-                                cout << "\t  SET 7,H";
+                                printLine("SET 7,H","");
                                 break;
                             case 0xFD:
-                                cout << "\t  SET 7,L";
+                                printLine("SET 7,L","");
                                 break;
                             case 0xFE:
-                                cout << "\t  SET 7,(HL)";
+                                printLine("SET 7,(HL)","");
                                 break;
                             case 0xFF:
-                                cout << "\t  SET 7,A";
+                                printLine("SET 7,A","");
                                 break;
                         }
                         
-                        counter++;//Increase our counter, as we've read another byte from our source file
+                        //counter++;//Increase our counter, as we've read another byte from our source file
                         //This way, our addresses going forward will be correct...
 
                         break;
                     case 0xCC:
-                        cout << "\t  CALL Z,a16";
+                        printLine("CALL Z,a16","");
                         break;
                     case 0xCD: //CALL a16
 
@@ -1624,83 +1633,83 @@ int main(int argc, char * argv[])
                        
                         print16BitLine("CALL ", "Call a function at the address specified", "->PC", byte1,byte2);
 
-                        cout << "\t  CALL a16";
+                        printLine("CALL a16","");
                         break;
                     case 0xCE:
-                        cout << "\t  ADC A,d8";
+                        printLine("ADC A,d8","");
                         break;
                     case 0xCF:
-                        cout << "\t  RST 08H";
+                        printLine("RST 08H", "");
                         break;
 
                     case 0xD0:
-                        cout << "\t  RET NC";
+                        printLine("RET NC", "");
                         break;
                     case 0xD1:
-                        cout << "\t  POP DE";
+                        printLine("POP DE", "");
                         break;
                     case 0xD2:
-                        cout << "\t  JP NC,a16";
+                        printLine("JP NC,a16", "");
                         break;
                     case 0xD3:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xD4:
-                        cout << "\t  CALL NC,16";
+                        printLine("CALL NC,16", "");
                         break;
                     case 0xD5:
-                        cout << "\t  PUSH DE";
+                        printLine("PUSH DE", "");
                         break;
                     case 0xD6:
-                        cout << "\t  SUB d8";
+                        printLine("SUB d8", "");
                         break;
                     case 0xD7:
-                        cout << "\t  RST 10H";
+                        printLine("RST 10H", "");
                         break;
                     case 0xD8:
-                        cout << "\t  RET C";
+                        printLine("RET C", "");
                         break;
                     case 0xD9:
-                        cout << "\t  RETI";
+                        printLine("RETI", "");
                         break;
                     case 0xDA:
-                        cout << "\t  JP C,a16";
+                        printLine("JP C,a16", "");
                         break;
                     case 0xDB:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xDC:
-                        cout << "\t  CALL C,a16";
+                        printLine("CALL C,a16", "");
                         break;
                     case 0xDD:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xDE:
-                        cout << "\t  SBC A,d8";
+                        printLine("SBC A,d8", "");
                         break;
                     case 0xDF:
-                        cout << "\t  RST 18H";
+                        printLine("RST 18H", "");
                         break;
 
 
 
                     case 0xE0:
-                        cout << "\t  LDH (a8),A";
+                        printLine("LDH (a8),A", "");
                         break;
                     case 0xE1:
-                        cout << "\t  POP HL";
+                        printLine("POP HL", "");
                         break;
                     case 0xE2:
-                        cout << "\t  LD (C),A";
+                        printLine("LD (C),A", "");
                         break;
                     case 0xE3:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xE4:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xE5:
-                        cout << "\t  PUSH HL\t\t\t\t\tPush the contents of HL onto the stack";
+                        printLine("PUSH HL\t\t\t\t\tPush the contents of HL onto the stack", "");
                         break;
                     case 0xE6: //AND d8
                         byte1 = getNext8Bits(inputfile);
@@ -1708,89 +1717,89 @@ int main(int argc, char * argv[])
                         print8BitLine("AND A", "Do the binary AND operation of this immediate value and A", " && A", byte1);
 
 
-                        cout << "\t  AND d8";
+                        printLine("AND d8", "");
                         break;
                     case 0xE7:
-                        cout << "\t  RST 20H";
+                        printLine("RST 20H", "");
                         break;
                     case 0xE8:
-                        cout << "\t  ADD SP,r8";
+                        printLine("ADD SP,r8", "");
                         break;
                     case 0xE9:
-                        cout << "\t  JP (HL)";
+                        printLine("JP (HL)", "");
                         break;
                     case 0xEA:
-                        cout << "\t  LD (a16),A";
+                        printLine("LD (a16),A", "");
                         break;
                     case 0xEB:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xEC:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xED:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xEE:
-                        cout << "\t  XOR d8";
+                        printLine("XOR d8", "");
                         break;
                     case 0xEF:
-                        cout << "\t  RST 28H";
+                        printLine("RST 28H", "");
                         break;
 
                     case 0xF0:
-                        cout << "\t  LDH A,(a8)";
+                        printLine("LDH A,(a8)", "");
                         break;
                     case 0xF1:
-                        cout << "\t  POP AF";
+                        printLine("POP AF", "");
                         break;
                     case 0xF2:
-                        cout << "\t  LD A,(C)";
+                        printLine("LD A,(C)", "");
                         break;
                     case 0xF3:
-                        cout << "\t  DI";
+                        printLine("DI", "");
                         break;
                     case 0xF4:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xF5:
-                        cout << "\t  PUSH AF\t\t\t\tPush the contents of AF onto the stack";
+                        printLine("PUSH AF\t\t\t\tPush the contents of AF onto the stack", "");
                         break;
                     case 0xF6:
-                        cout << "\t  OR d8";
+                        printLine("OR d8", "");
                         break;
                     case 0xF7:
-                        cout << "\t  RST 30H";
+                        printLine("RST 30H", "");
                         break;
                     case 0xF8:
-                        cout << "\t  LD HL,SP+r8";
+                        printLine("LD HL,SP+r8", "");
                         break;
                     case 0xF9:
-                        cout << "\t  LD SP,HL";
+                        printLine("LD SP,HL", "");
                         break;
                     case 0xFA:
-                        cout << "\t  LD A,(a16)";
+                        printLine("LD A,(a16)", "");
                         break;
                     case 0xFB:
-                        cout << "\t  EI";
+                        printLine("EI", "");
                         break;
                     case 0xFC:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xFD:
-                        cout << "\t  Unused";
+                        printLine("Unused", "");
                         break;
                     case 0xFE:
-                        cout << "\t  CP d8";
+                        printLine("CP d8", "");
                         break;
                     case 0xFF:
-                        cout << "\t  RST 38H";
+                        printLine("RST 38H", "");
                         break;
                 }
                 
                 cout << endl;
                 
-                counter = counter+1;
+               // counter = counter+1;
 
         	}
             else //Because we're starting assembly somewhere else, we don't care about this data. So let's burn it...
