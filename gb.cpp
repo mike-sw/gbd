@@ -86,8 +86,10 @@ void printLine(string instruction, string description)
     counter++;
 }
 
-bool isAddressSpecial(int address) //It's worth noting that address is passed as a DECIMAL
+bool isAddressSpecial(int address, unsigned char data) //It's worth noting that address is passed as a DECIMAL
 {
+
+    //This data provided by the EXCELLENT documentation here: http://gbdev.gg8.se/wiki/articles/The_Cartridge_Header
     if(address==256) //100h, our OEP
     {
         cout << "\t\t<-- Gameboy starts execution here" << endl;
@@ -108,8 +110,214 @@ bool isAddressSpecial(int address) //It's worth noting that address is passed as
         cout << "\t\t<-- Manufacturer and Publisher code" << endl;
         return true;
     }
+    if(address==326) //Do we have super gameboy functionality?
+    {
+        cout << "\t\t<-- SGB Functionality (";
+        printByteAsHex(data);
 
+        //Read our provided data and determine what the functionality is
+        switch(data)
+        {
+            case 0x00: //No
+                cout << "= No)" << endl;
+                break;
+            case 0x03: //Yes
+                cout << "= Yes)" << endl;
+                break;
+            default:
+                cout << " = Unknown)" << endl;
+                break;
+        }
+        return true;
+    }
+    if(address==327) //What type of cartridge is this?
+    {
+        cout << "\t\t<-- Cartridge type, Memory Bank Controller, and Misc Hardware (";
 
+        switch(data)
+        {
+            case 0x00: //Rom only
+                cout << "ROM Only)" << endl;
+                break;
+            case 0x01:
+                cout << "MBC1)" << endl;
+                break;
+            case 0x02:
+                cout << "MBC1+RAM)" << endl;
+                break;
+            case 0x03:
+                cout << "MBC1+RAM+Battery)" << endl;
+                break;
+
+            case 0x05:
+                cout << "MBC2)" << endl;
+                break;
+            case 0x06:
+                cout << "MBC2+Battery)" << endl;
+                break;
+            
+            case 0x08:
+                cout << "ROM+RAM)" << endl;
+                break;
+            case 0x09:
+                cout << "ROM+RAM+Battery)" << endl;
+                break;
+            case 0x0B:
+                cout << "MMM01)" << endl;
+                break;
+            case 0x0C:
+                cout << "MMM01+RAM)" << endl;
+                break;
+            case 0x0D:
+                cout << "MMM01+RAM+Battery)" << endl;
+                break;
+            case 0x0F:
+                cout << "MBC3+Timer+Battery)" << endl;
+                break;
+            case 0x10:
+                cout << "MBC3+Timer+RAM+Battery)" << endl;
+                break;
+            case 0x11:
+                cout << "MBC3)" << endl;
+                break;
+            case 0x12:
+                cout << "MBC3+RAM)" << endl;
+                break;
+            case 0x13:
+                cout << "MBC3+RAM+Battery)" << endl;
+                break;
+            case 0x19:
+                cout << "MBC5)" << endl;
+                break;
+            case 0x1A:
+                cout << "MBC5+RAM)" << endl;
+                break;
+            case 0x1B:
+                cout << "MBC5+RAM+Battery)" << endl;
+                break;
+            case 0x1C:
+                cout << "MBC5+Rumble)" << endl;
+                break;
+            case 0x1D:
+                cout << "MBC5+Rumble+RAM)" << endl;
+                break;
+            case 0x1E:
+                cout << "MBC5+Rumble+RAM+Battery)" << endl;
+                break;
+            case 0x20:
+                cout << "MBC6)" << endl;
+                break;
+            case 0x22:
+                cout << "MBC7+Sensor+Rumble+RAM+Battery)" << endl;
+                break;
+            case 0xFC:
+                cout << "Gameboy Pocket Camera)" << endl;
+                break;
+            case 0xFD:
+                cout << "Bandai Tama5)" << endl;
+                break;
+            case 0xFE:
+                cout << "HuC3)" << endl;
+                break;
+            case 0xFF:
+                cout << "HuC1+RAM+Battery)" << endl;
+                break;
+            default:
+                cout << "Unknown)" << endl;
+                break;
+        }
+
+        return true;
+    }
+    if(address==328) //How big is our cartridge?
+    {
+        //We can calculate this by grabbing the value, multiplying by 32, and adding 32
+
+        cout << "\t\t<-- The size of the cartridge" << endl;
+        return true;
+    }
+    if(address==329) //How much RAM is available via the cartridge?
+    {
+        cout << "\t\t<-- Amount of RAM on the Cartridge (";
+        switch(data)
+        {
+            case 0x00:
+                cout << "None)" << endl;
+                break;
+            case 0x01:
+                cout << "2kb)" << endl;
+                break;
+            case 0x02:
+                cout << "8kb)" << endl;
+                break;
+            case 0x03:
+                cout << "32kb)" << endl;
+                break;
+            case 0x04:
+                cout << "128kb)" << endl;
+                break;
+            case 0x05:
+                cout << "64kb)" << endl;
+                break;
+            default:
+                cout << "Unknown)" << endl;
+                break;
+        }
+        return true;
+    }
+    if(address==330) //Geographic distribution of the cartridge, basically "Are we in Japan?"
+    {
+        cout << "\t\t<-- Distribution (";
+        switch(data)
+        {
+            case 0x00:
+                cout << "Japan)" << endl;
+                break;
+            case 0x01:
+                cout << "Non-Japan)" << endl;
+                break;
+            default:
+                cout << "Unknown)" << endl;
+                break;
+        }
+        return true;
+    }
+    if(address==331) //Legacy publisher code. If we show 33, then we need to go above to determine the publisher
+    {
+        cout << "\t\t<-- Legacy publisher code (";
+        switch(data)
+        {
+            case 0x33:
+                cout << "See 0x0144-0x0155)" << endl;
+                break;
+            default:
+                cout << "Unknown)" << endl;
+                break;
+        }
+        return true;
+    }
+    if(address==332) //ROM Version number. Usually 0, but it could be something else
+    {
+        cout << "\t\t<-- ROM Version number (";
+        printByteAsHex(data);
+        cout << ")" << endl;
+        return true;
+    }
+    if(address==333) //header checksum of bytes 0x0134 through 0x014C
+    {
+        cout << "\t\t<-- Header (0x0134 - 0x014C) checksum (";
+        printByteAsHex(data);
+        cout << ")" << endl;
+        return true;
+    }
+    if(address==334 || address==335) //Global ROM Checksum (unused)
+    {
+        cout << "\t\t<-- Full-ROM checksum (";
+        printByteAsHex(data);
+        cout << ")" << endl;
+        return true;
+    }
+    
     return false;
 
 }
@@ -214,7 +422,7 @@ int main(int argc, char * argv[])
 
                 */
 
-                if(isAddressSpecial(counter))
+                if(isAddressSpecial(counter, thisByte))
                 {
                     counter++;
                 }
