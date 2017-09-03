@@ -64,7 +64,7 @@ void print16BitLine(string instruction, string description, string impactedRegis
     printByteAsHex(byte2);
     printByteAsHex(byte1);
     //cout << setfill('-') << setw(30);
-    cout << "\t\t";
+    cout << "\t";
 
     //Print the value of these bytes into the description of this function
     printByteAsHex(byte2);
@@ -288,7 +288,7 @@ bool isAddressSpecial(int address, unsigned char data) //It's worth noting that 
         switch(data)
         {
             case 0x33:
-                cout << "See 0x0144-0x0155)" << endl;
+                cout << "See 0x0144-0x0155. This ROM is too new!)" << endl;
                 break;
             default:
                 cout << "Unknown)" << endl;
@@ -447,11 +447,9 @@ int main(int argc, char * argv[])
                            
                             print16BitLine("LD BC", "Load a 16-bit immediate value into registers BC", "->BC", byte1, byte2);
 
-
-
                             break;
                         case 0x02:
-                            printLine("LD (BC),A","");
+                            printLine("LD (BC),A","Load an 8-bit value from A into 16-bit register BC");
                             break;
                         case 0x03:
                             printLine("INC BC", "Increment Register");
@@ -477,7 +475,7 @@ int main(int argc, char * argv[])
                             printLine("LD (a16),SP", "");
                             break;
                         case 0x09:
-                            printLine("ADD HL, BC", "");
+                            printLine("ADD HL, BC", "Add the values in registers HL and BC");
                             break;
                         case 0x0A:
                             printLine("LD A,(BC)", "");
@@ -552,7 +550,12 @@ int main(int argc, char * argv[])
                             printLine("DEC E", "Decrement Register");
                             break;
                         case 0x1E:
-                            printLine("LD E,d8", "");
+                            //printLine("LD E,d8", "");
+
+                            byte1 = getNext8Bits(inputfile);
+                           
+                            print8BitLine("LD E,", "Load a 8-bit immediate value into register E", "->E", byte1);
+
                             break;
                         case 0x1F:
                             printLine("RRA","");
@@ -562,7 +565,13 @@ int main(int argc, char * argv[])
                             printLine("JR NZ,r8", "");
                             break;
                         case 0x21:
-                            printLine("LD HL,d16", "");
+                            //printLine("LD HL,d16", "");
+
+                            byte1 = getNext8Bits(inputfile);
+                            byte2 = getNext8Bits(inputfile);
+                           
+                            print16BitLine("LD HL,", "Load a 16-bit immediate value into registers HL", "->HL", byte1,byte2);
+
                             break;
                         case 0x22:
                             printLine("LD(HL+),A","");
@@ -577,7 +586,11 @@ int main(int argc, char * argv[])
                             printLine("DEC H","Decrement Register");
                             break;
                         case 0x26:
-                            printLine("LD H,d8", "");
+                            //printLine("LD H,d8", "");
+
+                            byte1 = getNext8Bits(inputfile);
+                           
+                            print8BitLine("LD H,", "Load a 8-bit immediate value into register H", "->H", byte1);
                             break;
                         case 0x27:
                             printLine("DAA","Converts A into packed BCD");
@@ -608,14 +621,20 @@ int main(int argc, char * argv[])
                             //printLine("LD L,d8", "");
                             break;
                         case 0x2F:
-                            printLine("CPL","");
+                            printLine("CPL","Complement A");
                             break;
 
                         case 0x30:
                             printLine("JR NC,r8", "");
                             break;
                         case 0x31:
-                            printLine("LD SP,d16", "");
+                            //printLine("LD SP,d16", "");
+
+                            byte1 = getNext8Bits(inputfile);
+                            byte2 = getNext8Bits(inputfile);
+                           
+                            print16BitLine("LD HL,", "Load a 16-bit immediate value into registers HL", "->HL", byte1,byte2);
+
                             break;
                         case 0x32:
                             printLine("LD (HL-),A","");
@@ -654,7 +673,11 @@ int main(int argc, char * argv[])
                             printLine("DEC A","Decrement Register");
                             break;
                         case 0x3E:
-                            printLine("LD A,d8", "");
+                            //printLine("LD A,d8", "");
+
+                            byte1 = getNext8Bits(inputfile);
+                           
+                            print8BitLine("LD A,", "Load a 8-bit immediate value into register A", "->A", byte1);
                             break;
                         case 0x3F:
                             printLine("CCF","");
@@ -765,46 +788,46 @@ int main(int argc, char * argv[])
                             printLine("LD H,C","C->H\tCopy the value in register C into register H");
                             break;
                         case 0x62:
-                            printLine("LD H,D","");
+                            printLine("LD H,D","D->H\tCopy the value in register D into register H");
                             break;
                         case 0x63:
-                            printLine("LD H,B","");
+                            printLine("LD H,B","B->H\tCopy the value in register B into register H");
                             break;
                         case 0x64:
-                            printLine("LD H,H","");
+                            printLine("LD H,H","H->H\tCopy the value in register H into itself");
                             break;
                         case 0x65:
-                            printLine("LD H,L","");
+                            printLine("LD H,L","L->H\tCopy the value in register L into register H");
                             break;
                         case 0x66:
                             printLine("LD H,(HL)","");
                             break;
                         case 0x67:
-                            printLine("LD H,A","");
+                            printLine("LD H,A","A->H\tCopy the value in register A into register H");
                             break;
                         case 0x68:
-                            printLine("LD H,B","");
+                            printLine("LD L,B","B->H\tCopy the value in register B into register H");
                             break;
                         case 0x69:
-                            printLine("LD L,C","");
+                            printLine("LD L,C","C->L\tCopy the value in register C into register L");
                             break;
                         case 0x6A:
-                            printLine("LD H,B","");
+                            printLine("LD L,D","D->L\tCopy the value in register D into register L");
                             break;
                         case 0x6B:
-                            printLine("LD L,E","");
+                            printLine("LD L,E","E->L\tCopy the value in register E into register L");
                             break;
                         case 0x6C:
-                            printLine("LD L,H","");
+                            printLine("LD L,H","H->L\tCopy the value in register H into register L");
                             break;
                         case 0x6D:
-                            printLine("LD L,L","");
+                            printLine("LD L,L","L->L\tCopy the value in register D into itself");
                             break;
                         case 0x6E:
                             printLine("LD L,(HL)","");
                             break;
                         case 0x6F:
-                            printLine("LD L,A","");
+                            printLine("LD L,A","A->L\tCopy the value in register A into register L");
                             break;
                         case 0x70:
                             printLine("LD (HL),B","");
@@ -831,28 +854,28 @@ int main(int argc, char * argv[])
                             printLine("LD (HL),A","");
                             break;
                         case 0x78:
-                            printLine("LD A,B","");
+                            printLine("LD A,B","B->A\tCopy the value in register B into register A");
                             break;
                         case 0x79:
-                            printLine("LD A,C","");
+                            printLine("LD A,C","C->A\tCopy the value in register C into register A");
                             break;
                         case 0x7A:
-                            printLine("LD A,D","");
+                            printLine("LD A,D","D->A\tCopy the value in register D into register A");
                             break;
                         case 0x7B:
-                            printLine("LD A,E","");
+                            printLine("LD A,E","E->A\tCopy the value in register E into register A");
                             break;
                         case 0x7C:
-                            printLine("LD A,H","");
+                            printLine("LD A,H","H->A\tCopy the value in register H into register A");
                             break;
                         case 0x7D:
-                            printLine("LD A,L","");
+                            printLine("LD A,L","L->A\tCopy the value in register L into register A");
                             break;
                         case 0x7E:
                             printLine("LD A,(HL)","");
                             break;
                         case 0x7F:
-                            printLine("LD A,A","");
+                            printLine("LD A,A","C->A\tCopy the value in register C into itself");
                             break;
                         case 0x80:
                             printLine("ADD A,B","A+B\tAdd the values in registers A and B, with the result stored in A");
@@ -879,28 +902,28 @@ int main(int argc, char * argv[])
                             printLine("ADD A,A","A+A\tAdd the values in registers A and A, with the result stored in A");
                             break;
                         case 0x88:
-                            printLine("ADC A,B","");
+                            printLine("ADC A,B","A+B\tAdd A+B, and carry flag to A");
                             break;
                         case 0x89:
-                            printLine("ADC A,C","");
+                            printLine("ADC A,C","A+B\tAdd A+C, and carry flag to A");
                             break;
                         case 0x8A:
-                            printLine("ADC A,D","");
+                            printLine("ADC A,D","A+B\tAdd A+D, and carry flag to A");
                             break;
                         case 0x8B:
-                            printLine("ADC A,E","");
+                            printLine("ADC A,E","A+B\tAdd A+E, and carry flag to A");
                             break;
                         case 0x8C:
-                            printLine("ADC A,H","");
+                            printLine("ADC A,H","A+B\tAdd A+H, and carry flag to A");
                             break;
                         case 0x8D:
-                            printLine("ADC A,L","");
+                            printLine("ADC A,L","A+B\tAdd A+L, and carry flag to A");
                             break;
                         case 0x8E:
-                            printLine("ADC A,(HL)","");
+                            printLine("ADC A,(HL)","A+B\tAdd A+HL, and carry flag to A");
                             break;
                         case 0x8F:
-                            printLine("ADC A,A","");
+                            printLine("ADC A,A","A+B\tAdd A+A, and carry flag to A");
                             break;
 
                         case 0x90:
@@ -1005,56 +1028,56 @@ int main(int argc, char * argv[])
                             printLine("OR B","A || B\tOr the values in registers A and B, with the result stored in A");
                             break;
                         case 0xB1:
-                            printLine("OR C","");
+                            printLine("OR C","A || C\tOr the values in registers A and C, with the result stored in A");
                             break;
                         case 0xB2:
-                            printLine("OR D","");
+                            printLine("OR D","A || D\tOr the values in registers A and D, with the result stored in A");
                             break;
                         case 0xB3:
-                            printLine("OR E","");
+                            printLine("OR E","A || E\tOr the values in registers A and E, with the result stored in A");
                             break;
                         case 0xB4:
-                            printLine("OR H","");
+                            printLine("OR H","A || H\tOr the values in registers A and H, with the result stored in A");
                             break;
                         case 0xB5:
-                            printLine("OR L","");
+                            printLine("OR L","A || L\tOr the values in registers A and L, with the result stored in A");
                             break;
                         case 0xB6:
-                            printLine("OR (HL)","");
+                            printLine("OR (HL)","A || HL\tOr the values in registers A and HL, with the result stored in A");
                             break;
                         case 0xB7:
-                            printLine("OR A","");
+                            printLine("OR A","A || A\tA OR'd by itself is just the value of A. This is used to clear flags.");
                             break;
                         case 0xB8:
-                            printLine("CP B","");
+                            printLine("CP B","if(A==B)\tCompare A to B. Essentially do A-B, and see if ZF is set");
                             break;
                         case 0xB9:
-                            printLine("CP C","");
+                            printLine("CP C","if(A==C)\tCompare A to C. Essentially do A-C, and see if ZF is set");
                             break;
                         case 0xBA:
-                            printLine("CP D","");
+                            printLine("CP D","if(A==D)\tCompare A to D. Essentially do A-D, and see if ZF is set");
                             break;
                         case 0xBB:
-                            printLine("CP E","");
+                            printLine("CP E","if(A==E)\tCompare A to E. Essentially do A-E, and see if ZF is set");
                             break;
                         case 0xBC:
-                            printLine("CP H","");
+                            printLine("CP H","if(A==H)\tCompare A to H. Essentially do A-H, and see if ZF is set");
                             break;
                         case 0xBD:
-                            printLine("CP L","");
+                            printLine("CP L","if(A==L)\tCompare A to L. Essentially do A-L, and see if ZF is set");
                             break;
                         case 0xBE:
-                            printLine("CP (HL)","");
+                            printLine("CP (HL)","if(A==HL)\tCompare A to HL. Essentially do A-HL, and see if ZF is set");
                             break;
                         case 0xBF:
-                            printLine("CP A","");
+                            printLine("CP A","if(A==A)\tCompare A to A. Essentially do A-A. ZF will always be set, as A-A=0");
                             break;
 
                         case 0xC0:
                             printLine("RET NZ","");
                             break;
                         case 0xC1:
-                            printLine("POP BC","");
+                            printLine("POP BC","Pop two bytes off of the stack, and store them in BC");
                             break;
                         case 0xC2:
                             printLine("JP NZ,a16","");
@@ -1071,7 +1094,7 @@ int main(int argc, char * argv[])
                             printLine("CALL NZ,a16", "");
                             break;
                         case 0xC5:
-                            printLine("PUSH BC","");
+                            printLine("PUSH BC","BC->Stack\tPush this register pair onto the stack");
                             break;
                         case 0xC6:
                             printLine("ADD A,d8", "");
@@ -1080,10 +1103,10 @@ int main(int argc, char * argv[])
                             printLine("RST 00H\t\t\t\t\tCall the code at 00",""); //According to https://www.cemetech.net/forum/viewtopic.php?t=6744
                             break;
                         case 0xC8:
-                            printLine("RET Z","");
+                            printLine("RET Z","Return if the Zero flag is set");
                             break;
                         case 0xC9:
-                            printLine("RET","");
+                            printLine("RET","Pop two bytes from the stack and jump to that address");
                             break;
                         case 0xCA:
                             printLine("JP Z,a16", "");
@@ -1905,13 +1928,13 @@ int main(int argc, char * argv[])
                            
                             print16BitLine("CALL ", "Call a function at the address specified", "->PC", byte1,byte2);
 
-                            printLine("CALL a16","");
+                            //printLine("CALL a16","");
                             break;
                         case 0xCE:
                             printLine("ADC A,d8","");
                             break;
                         case 0xCF:
-                            printLine("RST 08H", "");
+                            printLine("RST 08H", "Push current address onto the stack, and jump to 0x0010");
                             break;
 
                         case 0xD0:
@@ -1936,16 +1959,21 @@ int main(int argc, char * argv[])
                             printLine("SUB d8", "");
                             break;
                         case 0xD7:
-                            printLine("RST 10H", "");
+                            printLine("RST 10H", "Push current address onto the stack, and jump to 0x0010");
                             break;
                         case 0xD8:
                             printLine("RET C", "");
                             break;
                         case 0xD9:
-                            printLine("RETI", "");
+                            printLine("RETI", "\tPop two bytes from the stack, go to that address, and enable interrupts");
                             break;
                         case 0xDA:
-                            printLine("JP C,a16", "");
+                            byte1 = getNext8Bits(inputfile);
+                            byte2 = getNext8Bits(inputfile);
+                           
+                            print16BitLine("JP C,", "If the Carry flag is set, jump to the immediately following 16-bit address", "->PC", byte1,byte2);
+
+                           // printLine("JP C,a16", "");
                             break;
                         case 0xDB:
                             printLine("Unused", "");
@@ -1960,7 +1988,7 @@ int main(int argc, char * argv[])
                             printLine("SBC A,d8", "");
                             break;
                         case 0xDF:
-                            printLine("RST 18H", "");
+                            printLine("RST 18H", "Push current address onto the stack, and jump to 0x0018");
                             break;
 
 
@@ -1989,10 +2017,10 @@ int main(int argc, char * argv[])
                             print8BitLine("AND A", "Do the binary AND operation of this immediate value and A", " && A", byte1);
 
 
-                            printLine("AND d8", "");
+                            //printLine("AND d8", "");
                             break;
                         case 0xE7:
-                            printLine("RST 20H", "");
+                            printLine("RST 20H", "Push current address onto the stack, and jump to 0x0020");
                             break;
                         case 0xE8:
                             printLine("ADD SP,r8", "");
@@ -2013,14 +2041,20 @@ int main(int argc, char * argv[])
                             printLine("Unused", "");
                             break;
                         case 0xEE:
-                            printLine("XOR d8", "");
+                            byte1 = getNext8Bits(inputfile);
+                           
+                            print8BitLine("XOR ", "XOR this value against A", " XOR A->A", byte1);
+                            //printLine("XOR d8", "");
                             break;
                         case 0xEF:
-                            printLine("RST 28H", "");
+                            printLine("RST 28H", "Push current address onto the stack, and jump to 0x0028");
                             break;
 
                         case 0xF0:
-                            printLine("LDH A,(a8)", "");
+                            byte1 = getNext8Bits(inputfile);
+                           
+                            print8BitLine("LDH A,", "Load", "+FF00 as pointer->A", byte1);
+                           //printLine("LDH A,(a8)", "");
                             break;
                         case 0xF1:
                             printLine("POP AF", "");
@@ -2041,7 +2075,7 @@ int main(int argc, char * argv[])
                             printLine("OR d8", "");
                             break;
                         case 0xF7:
-                            printLine("RST 30H", "");
+                            printLine("RST 30H", "Push current address onto the stack, and jump to 0x0030");
                             break;
                         case 0xF8:
                             printLine("LD HL,SP+r8", "");
@@ -2053,7 +2087,7 @@ int main(int argc, char * argv[])
                             printLine("LD A,(a16)", "");
                             break;
                         case 0xFB:
-                            printLine("EI", "");
+                            printLine("EI", "Enable Interrupts, but only after this instruction finishes executing");
                             break;
                         case 0xFC:
                             printLine("Unused", "");
@@ -2061,11 +2095,14 @@ int main(int argc, char * argv[])
                         case 0xFD:
                             printLine("Unused", "");
                             break;
-                        case 0xFE:
-                            printLine("CP d8", "");
+                        case 0xFE://CP d8
+                            byte1 = getNext8Bits(inputfile);
+                           
+                            print8BitLine("CP ", "Subtract this value from A", "] A-this value->A", byte1);
+                           // printLine("CP d8", "");
                             break;
                         case 0xFF:
-                            printLine("RST 38H", "");
+                            printLine("RST 38H", "Push current address onto the stack, and jump to 0x0038");
                             break;
                     }
                     
